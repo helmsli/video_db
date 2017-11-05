@@ -12,35 +12,29 @@ public interface CoursesManagerService {
 	 * @param courses
 	 * @return
 	 */
-	public ProcessResult configureCourses(long userId,Courses courses);
+	public ProcessResult configureCourses(Courses courses);
 	
 	/**
 	 * 配置课时信息
 	 * @param courseClass
 	 * @return
 	 */
-	public ProcessResult configureClass(long userId,List<CourseClass> courseClassList);
+	public ProcessResult configureClass(List<CourseClass> courseClassList);
 	
 	/**
 	 * 删除课时信息
 	 * @param courseClass
 	 * @return
 	 */
-	public ProcessResult deleteClass(long userId,List<CourseClass> courseClassList);
+	public ProcessResult deleteClass(List<CourseClass> courseClassList);
 	
 	/**
 	 * 删除课程信息
 	 * @param courseClass
 	 * @return
 	 */
-	public ProcessResult deleteCourse(long userId,Courses courses);
+	public ProcessResult deleteCourse(Courses courses);
 	
-	/**
-	 * 发布课程
-	 * @param courses
-	 * @return
-	 */
-	public ProcessResult publishCourses(long userId,Courses courses);
 	
 	/**
 	 * 
@@ -48,7 +42,7 @@ public interface CoursesManagerService {
 	 * @param courses
 	 * @return
 	 */
-	public ProcessResult stopSaleCourses(long userId,Courses courses);
+	public ProcessResult stopSaleCourses(Courses courses);
 	
 	
 	/**
@@ -56,14 +50,14 @@ public interface CoursesManagerService {
 	 * @param userId
 	 * @return  -- 返回所有课程的信息列表；
 	 */
-	public ProcessResult queryMyCourses(long userId,String catetory);
+	public ProcessResult queryMyCourses(String catetory);
 	
 	/**
 	 * 查询单个课程信息
 	 * @param courseId
 	 * @return
 	 */
-	public ProcessResult queryCourses(long userId,String courseId);
+	public ProcessResult queryCourses(String partitionId,String courseId);
 	
 	/**
 	 * 查询单个课程

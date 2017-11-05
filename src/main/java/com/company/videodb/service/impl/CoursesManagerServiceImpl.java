@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+
 import com.company.videodb.Const.VideodbConst;
 import com.company.videodb.domain.CourseClass;
 import com.company.videodb.domain.Courses;
@@ -37,10 +38,12 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		str.append(DbAlgorithm.Prop_split);
 		str.append(courses.getOwner());
 		str.append(DbAlgorithm.Prop_split);
-		str.append(courses.getRealPrice());
+		
+		long lAmount =Math.round(courses.getRealPrice()*100);	
+		str.append(lAmount);
 		str.append(DbAlgorithm.Prop_split);
 		String crcCheck = DbAlgorithm.EncoderByMd5(this.dbCrcKey, str.toString());
-		courses.setCheckCrc(crcCheck);
+		
 		return crcCheck;
 	}
 	/**
@@ -54,6 +57,35 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		return crcCheck.equalsIgnoreCase(courses.getCheckCrc());
 	}
 	
+	protected String createCoureseClassCrc(CourseClass courseClass)
+	{
+		StringBuilder str  = new StringBuilder();
+		str.append(courseClass.getCourseId());
+		str.append(DbAlgorithm.Prop_split);
+		str.append(courseClass.getOwner());
+		str.append(DbAlgorithm.Prop_split);
+		long lAmount =Math.round(courseClass.getRealPrice()*100);	
+		str.append(lAmount);
+		str.append(DbAlgorithm.Prop_split);
+		str.append(courseClass.getVodeoId());
+		str.append(DbAlgorithm.Prop_split);
+		str.append(courseClass.getVoidurl());
+		str.append(DbAlgorithm.Prop_split);
+		String crcCheck = DbAlgorithm.EncoderByMd5(this.dbCrcKey, str.toString());
+		
+		return crcCheck;
+	}
+	/**
+	 * 
+	 * @param courses
+	 * @return
+	 */
+	protected boolean checkCoureseClassCrc(CourseClass courses)
+	{
+		String crcCheck = this.createCoureseClassCrc(courses);
+		return crcCheck.equalsIgnoreCase(courses.getCheckCrc());
+	}
+	
 	/**
 	 * 先从数据库查询出对应的数据，如果数据不为空，则覆盖目标的属性
 	 * @param sourceCourses
@@ -64,9 +96,14 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	{
 		Courses courses= destCourses;
 		
-		if(!StringUtils.isEmpty(sourceCourses.getCatrgory()))
+		
+		if(!StringUtils.isEmpty(sourceCourses.getPartitionId()))
 		{
-			courses.setCatrgory(sourceCourses.getCatrgory());
+			courses.setPartitionId(sourceCourses.getPartitionId());
+		}
+		if(!StringUtils.isEmpty(sourceCourses.getCategory()))
+		{
+			courses.setCategory(sourceCourses.getCategory());
 		}
 		if(!StringUtils.isEmpty(sourceCourses.getCourseAvatar()))
 		{
@@ -142,6 +179,11 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	protected CourseClass getCourseClass(CourseClass sourceClass,CourseClass destClass)
 	{
 		CourseClass courseClass= destClass;
+		
+		if(!StringUtils.isEmpty(sourceClass.getPartitionId()))
+		{
+			courseClass.setPartitionId(sourceClass.getPartitionId());
+		}
 		
 		if(!StringUtils.isEmpty(sourceClass.getChapterId()))
 		{
@@ -233,17 +275,17 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	}
 	
 	@Override
-	public ProcessResult configureCourses(long userId,Courses courses) {
+	public ProcessResult configureCourses(Courses courses) {
 		// TODO Auto-generated method stub
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
-		courses.setOwner(String.valueOf(userId));
 		//从数据库中查询课程是否存在
-		processResult = queryCourses(userId,courses.getCourseId());
+		processResult = queryCourses(courses.getPartitionId(),courses.getCourseId());
 		//如果数据库中不存在数据，则插入
 		if(processResult.getRetCode()==VideodbConst.RESULT_Error_dbNotExist)
 		{
-			createCoureseCrc(courses);
+			String newCrc = createCoureseCrc(courses);
+			courses.setCheckCrc(newCrc);
 			coursesMapper.insertCourses(courses);
 			processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
 		}
@@ -252,8 +294,17 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		{
 			//用传入的新数据覆盖数据库中的数据，如果传入的数据为空，或者为0，则不替换
 			Courses dbCourses = (Courses)processResult.getResponseInfo();
+			//判断是否有人篡改过
+			
+			if(!this.checkCoureseCrc(dbCourses))
+			{
+				processResult.setRetCode(VideodbConst.RESULT_Error_Crc);
+				return processResult;
+			}
+			
 			dbCourses = getCourses(courses,dbCourses);
-			createCoureseCrc(dbCourses);
+			String newCrc = createCoureseCrc(dbCourses);
+			dbCourses.setCheckCrc(newCrc);
 			int updateNum = coursesMapper.updateCourses(dbCourses);
 			if(updateNum==1)
 			{
@@ -269,23 +320,32 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	}
 
 	@Transactional
-	protected boolean dbConfigClass(long userId,List<CourseClass> courseClassList)
+	protected boolean dbConfigClass(List<CourseClass> courseClassList)
 	{
 		// TODO Auto-generated method stub
 		for(CourseClass courseClass:courseClassList)
 		{
-			courseClass.setOwner(String.valueOf(userId));
+			
 			//查询课程
-			CourseClass dbCourseClass = courseClassMapper.selectByClassid(courseClass.getOwner(), courseClass.getCourseId(), courseClass.getChapterId(), courseClass.getClassId());
+			CourseClass dbCourseClass = courseClassMapper.selectByClassid(courseClass.getPartitionId(), courseClass.getCourseId(), courseClass.getChapterId(), courseClass.getClassId());
 			//如果课程存在
 			if(dbCourseClass!=null)
 			{
+				if(!this.checkCoureseClassCrc(dbCourseClass))
+				{
+					throw new RuntimeException(dbCourseClass.toString());
+				}
 				dbCourseClass = getCourseClass(courseClass,dbCourseClass);
+				String checkCrc = this.createCoureseClassCrc(dbCourseClass);
+				dbCourseClass.setCheckCrc(checkCrc);
 				courseClassMapper.updateClass(dbCourseClass);
 			}
 			//如果不存在，则插入
 			else
 			{
+				String checkCrc = this.createCoureseClassCrc(courseClass);
+				courseClass.setCheckCrc(checkCrc);
+				
 				courseClassMapper.insertCourseClass(courseClass);
 			}
 		}
@@ -293,13 +353,13 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	}
 	
 	@Override
-	public ProcessResult configureClass(long userId,List<CourseClass> courseClassList) {
+	public ProcessResult configureClass(List<CourseClass> courseClassList) {
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
 		
 		// TODO Auto-generated method stub
 		try {
-			dbConfigClass(userId,courseClassList);
+			dbConfigClass(courseClassList);
 			processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -309,25 +369,25 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	}
 
 	@Transactional
-	protected boolean dbdelClass(long userId,List<CourseClass> courseClassList)
+	protected boolean dbdelClass(List<CourseClass> courseClassList)
 	{
 		// TODO Auto-generated method stub
 		for(CourseClass courseClass:courseClassList)
 		{
-			courseClass.setOwner(String.valueOf(userId));
+			
 			//查询课程
-			courseClassMapper.deleteByClassid(courseClass.getOwner(), courseClass.getCourseId(), courseClass.getChapterId(), courseClass.getClassId());
+			courseClassMapper.deleteByClassid(courseClass.getPartitionId(), courseClass.getCourseId(), courseClass.getChapterId(), courseClass.getClassId());
 		}
 		return true;
 	}
 	@Override
-	public ProcessResult deleteClass(long userId,List<CourseClass> courseClassList) {
+	public ProcessResult deleteClass(List<CourseClass> courseClassList) {
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
 		
 		// TODO Auto-generated method stub
 		try {
-			dbdelClass(userId,courseClassList);
+			dbdelClass(courseClassList);
 			processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -337,12 +397,12 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	}
 
 	@Override
-	public ProcessResult deleteCourse(long userId,Courses courses) {
+	public ProcessResult deleteCourse(Courses courses) {
 		// TODO Auto-generated method stub
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
 		//删除课程
-		int delNumbers = this.coursesMapper.deleteCourses(String.valueOf(userId),courses.getCourseId());
+		int delNumbers = this.coursesMapper.deleteCourses(courses.getPartitionId(),courses.getCourseId());
 		if(delNumbers==1)
 		{
 			processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
@@ -350,14 +410,14 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		return processResult;
 	}
 
-	@Override
-	public ProcessResult publishCourses(long userId,Courses courses) {
+	
+	public ProcessResult publishCourses(Courses courses) {
 		/**
 		 * 将状态修改为发布
 		 */
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
-		courses.setOwner(String.valueOf(userId));
+		
 		courses.setStatus(CourseClass.STATUS_Published);
 		//删除课程
 		int delNumbers = this.coursesMapper.updateStatus(courses);
@@ -368,7 +428,7 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		return processResult;
 	}
 
-	@Override
+	
 	public ProcessResult queryMyCourses(long userId, String catetory) {
 		// TODO Auto-generated method stub
 		return null;
@@ -380,13 +440,13 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	}
 
 	@Override
-	public ProcessResult queryCourses(long userId, String courseId) {
+	public ProcessResult queryCourses(String partitionId,String courseId) {
 		/**
 		 * 将状态修改为发布
 		 */
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
-		Courses courses = this.coursesMapper.selectCoursesByid(String.valueOf(userId), courseId);
+		Courses courses = this.coursesMapper.selectCoursesByid(partitionId,courseId);
 		if(courses!=null)
 		{
 			if(this.checkCoureseCrc(courses))
@@ -430,7 +490,7 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		return processResult;
 	}
 
-	@Override
+
 	public ProcessResult stopSaleCourses(long userId, Courses courses) {
 		// TODO Auto-generated method stub
 		return null;
@@ -438,6 +498,16 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 
 	@Override
 	public ProcessResult stopSaleClass(long userId, String courseId, String chapterId, String classId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ProcessResult stopSaleCourses(Courses courses) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ProcessResult queryMyCourses(String catetory) {
 		// TODO Auto-generated method stub
 		return null;
 	}

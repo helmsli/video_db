@@ -15,7 +15,10 @@ import com.company.videodb.Const.VideodbConst;
 import com.company.videodb.domain.CourseClass;
 import com.company.videodb.domain.Courses;
 import com.company.videodb.service.CoursesManagerService;
+import com.google.gson.reflect.TypeToken;
+import com.xinwei.nnl.common.domain.JsonRequest;
 import com.xinwei.nnl.common.domain.ProcessResult;
+import com.xinwei.nnl.common.util.JsonUtil;
 
 @RestController
 @RequestMapping("/vodManagerDb")
@@ -23,19 +26,19 @@ public class VodManagerController {
 	@Resource(name="coursesManagerService")
 	private CoursesManagerService coursesManagerService;
 	/**
-	 * 老师发布视频到发布库，不是线上运营库
+	 * 配置运行库中的数据
 	 * @param courseId
 	 * @param userId
 	 * @param courses
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST,value = "{userId}/{courseId}/confCourses")
-	public  ProcessResult configureCourses(@PathVariable String courseId,@PathVariable long userId,@RequestBody Courses courses) {
+	@RequestMapping(method = RequestMethod.POST,value = "{dbid}/{courseId}/confCourses")
+	public  ProcessResult configureCourses(@PathVariable String dbid,@PathVariable String courseId,@RequestBody Courses courses) {
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
 		try {
 			
-			processResult= coursesManagerService.configureCourses(userId,courses);
+			processResult= coursesManagerService.configureCourses(courses);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,37 +52,21 @@ public class VodManagerController {
 	 * @param courses
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST,value = "{userId}/{courseId}/delCourses")
-	public  ProcessResult deleteCourses(@PathVariable String courseId,@PathVariable long userId,@RequestBody Courses courses) {
+	@RequestMapping(method = RequestMethod.POST,value = "{dbid}/{courseId}/delCourses")
+	public  ProcessResult deleteCourses(@PathVariable String dbid,@PathVariable String courseId,@RequestBody Courses courses) {
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
 		try {
-			processResult= coursesManagerService.deleteCourse(userId, courses);
+			processResult= coursesManagerService.deleteCourse(courses);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return processResult;
 	}
-	/**
-	 * 老师发布课程到线上运营库
-	 * @param courseId
-	 * @param userId
-	 * @param courses
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST,value = "{userId}/{courseId}/publishCourses")
-	public  ProcessResult publishCourses(@PathVariable String courseId,@PathVariable long userId,@RequestBody Courses courses) {
-		ProcessResult processResult = new ProcessResult();
-		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
-		try {
-			processResult= coursesManagerService.publishCourses(userId, courses);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return processResult;
-	}
+	
+	
+	
 	/**
 	 * 老师配置课程的课时
 	 * @param courseId
@@ -87,14 +74,13 @@ public class VodManagerController {
 	 * @param courseClass
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST,value = "{userId}/{courseId}/confClass")
-	public  ProcessResult configureClass(@PathVariable String courseId,@PathVariable long userId,@RequestBody CourseClass courseClass) {
+	@RequestMapping(method = RequestMethod.POST,value = "{dbid}/{courseId}/confClass")
+	public  ProcessResult configureClass(@PathVariable String dbid,@PathVariable String courseId,@RequestBody JsonRequest JsonRequest) {
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
 		try {
-			List<CourseClass> lists = new ArrayList<CourseClass>();
-			lists.add(courseClass);
-			processResult= coursesManagerService.configureClass(userId, lists);
+			List<CourseClass> courseClassList =JsonUtil.fromJson(JsonRequest.getJsonString(), new TypeToken<List<CourseClass>>() {}.getType());
+			processResult= coursesManagerService.configureClass(courseClassList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,39 +94,18 @@ public class VodManagerController {
 	 * @param courseClass
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST,value = "{userId}/{courseId}/delClass")
-	public  ProcessResult delClass(@PathVariable String courseId,@PathVariable long userId,@RequestBody CourseClass courseClass) {
+	@RequestMapping(method = RequestMethod.POST,value = "{dbid}/{courseId}/delClass")
+	public  ProcessResult delClass(@PathVariable String dbid,@PathVariable String courseId,@RequestBody JsonRequest JsonRequest) {
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
 		try {
-			List<CourseClass> lists = new ArrayList<CourseClass>();
-			lists.add(courseClass);
-			processResult= coursesManagerService.deleteClass(userId, lists);
+			List<CourseClass> courseClassList =JsonUtil.fromJson(JsonRequest.getJsonString(), new TypeToken<List<CourseClass>>() {}.getType());
+			
+			processResult= coursesManagerService.deleteClass(courseClassList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return processResult;
 	}
-	/**
-	 * 老师发布课时
-	 * @param courseId
-	 * @param userId
-	 * @param courseClass
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST,value = "{userId}/{courseId}/publishClass")
-	public  ProcessResult publishClass(@PathVariable String courseId,@PathVariable long userId,@RequestBody CourseClass courseClass) {
-		ProcessResult processResult = new ProcessResult();
-		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
-		try {
-			//List<CourseClass> lists = new ArrayList<CourseClass>();
-			processResult= coursesManagerService.publishClass(userId, courseClass.getCourseId(), courseClass.getChapterId(), courseClass.getClassId());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return processResult;
-	}
-	
-}
+} 

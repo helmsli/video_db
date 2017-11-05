@@ -27,6 +27,10 @@ public class CourseClass implements Serializable {
 	 */
 	public static final int STATUS_StopSales=4;
 	
+	/**
+	 * 分区ID
+	 */
+    private String partitionId;
 	
 	/** 课时ID，标识一个视频的唯一编号. */
 	private String classId;
@@ -275,6 +279,32 @@ public class CourseClass implements Serializable {
 
 	public void setTeacherResume(String teacherResume) {
 		this.teacherResume = teacherResume;
+	}
+
+	
+	
+	public String getPartitionId() {
+		return partitionId;
+	}
+
+	public void setPartitionId(String partitionId) {
+		this.partitionId = partitionId;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getClassDetail() {
+		return classDetail;
+	}
+
+	public void setClassDetail(String classDetail) {
+		this.classDetail = classDetail;
 	}
 
 	@Override

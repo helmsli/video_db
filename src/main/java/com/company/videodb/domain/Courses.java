@@ -11,7 +11,10 @@ import java.util.Date;
  */
 public class Courses implements Serializable {
 
-
+	/**
+	 * 分区ID
+	 */
+    private String partitionId;
 
 	/** 课程编号. */
 	private String courseId;
@@ -135,12 +138,12 @@ public class Courses implements Serializable {
 		this.searchKeys = searchKeys;
 	}
 
-	public String getCatrgory() {
-		return catrgory;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setCatrgory(String catrgory) {
-		this.catrgory = catrgory;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getCourseAvatar() {
@@ -239,12 +242,22 @@ public class Courses implements Serializable {
 	public void setTeacherResume(String teacherResume) {
 		this.teacherResume = teacherResume;
 	}
+	
+	
+
+	public String getPartitionId() {
+		return partitionId;
+	}
+
+	public void setPartitionId(String partitionId) {
+		this.partitionId = partitionId;
+	}
 
 	@Override
 	public String toString() {
 		return "Courses [courseId=" + courseId + ", title=" + title + ", courseInfo=" + courseInfo + ", courseChapter="
 				+ courseChapter + ", detail=" + detail + ", fitPeople=" + fitPeople + ", searchKeys=" + searchKeys
-				+ ", catrgory=" + catrgory + ", courseAvatar=" + courseAvatar + ", difficultyLevel=" + difficultyLevel
+				+ ", catrgory=" + category + ", courseAvatar=" + courseAvatar + ", difficultyLevel=" + difficultyLevel
 				+ ", owner=" + owner + ", createTime=" + createTime + ", originalPrice=" + originalPrice
 				+ ", realPrice=" + realPrice + ", expireDate=" + expireDate + ", priceVer=" + priceVer + ", checkCrc="
 				+ checkCrc + ", status=" + status + ", teacherName=" + teacherName + ", teacherResume=" + teacherResume

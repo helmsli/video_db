@@ -18,7 +18,7 @@ public interface CoursesMapper {
 	 * 
 	 * @param courses
 	 */
-	@Insert("INSERT INTO courses(courseId,title,courseInfo,courseChapter,detail,fitPeople,"
+	@Insert("INSERT INTO courses(partitionId,courseId,title,courseInfo,courseChapter,detail,fitPeople,"
 			+ "searchKeys,catrgory,courseAvatar,difficultyLevel,owner,createTime,originalPrice,realPrice,"
 			+ "expireDate,priceVer,checkCrc,status,teacherName,teacherResume) VALUES("
 			+ "#{courseId},#{title},#{courseInfo},#{courseChapter},#{detail},#{fitPeople},"
@@ -30,8 +30,17 @@ public interface CoursesMapper {
 	 * @param courseId
 	 * @return
 	 */
-	@Select("SELECT * FROM courses where owner=#{owner} and courseId = #{courseId} ")
-	public Courses selectCoursesByid(@Param("owner") String owner,@Param("courseId") String courseId);
+	@Select("SELECT * FROM courses where partitionId=#{partitionId} and courseId = #{courseId} and owner=#{owner} ")
+	public Courses selectCoursesByOwner(@Param("owner") String owner,@Param("partitionId") String partitionId,@Param("courseId") String courseId);
+	
+	
+	/**
+	 * 
+	 * @param courseId
+	 * @return
+	 */
+	@Select("SELECT * FROM courses where partitionId=#{partitionId} and courseId = #{courseId} ")
+	public Courses selectCoursesByid(@Param("partitionId") String partitionId,@Param("courseId") String courseId);
 	
 	/**
 	 * 
@@ -42,7 +51,7 @@ public interface CoursesMapper {
 			+ "title=#{title},courseInfo=#{courseInfo},courseChapter=#{courseChapter},detail=#{detail},"
 			+ "fitPeople=#{fitPeople},searchKeys=#{searchKeys},catrgory=#{catrgory},courseAvatar=#{courseAvatar},"
 			+ "difficultyLevel=#{difficultyLevel},owner=#{owner},createTime=#{createTime},originalPrice=#{originalPrice},"
-			+ "realPrice=#{realPrice},expireDate=#{expireDate},priceVer=#{priceVer},checkCrc=#{checkCrc},status=#{status} ,teacherName=#{teacherName},teacherResume=#{teacherResume} where owner=#{owner} and courseId = #{courseId}")
+			+ "realPrice=#{realPrice},expireDate=#{expireDate},priceVer=#{priceVer},checkCrc=#{checkCrc},status=#{status} ,teacherName=#{teacherName},teacherResume=#{teacherResume} where partitionId=#{partitionId} and courseId = #{courseId}")
 	public int updateCourses(Courses courses);	
 	
 	/**
@@ -50,15 +59,15 @@ public interface CoursesMapper {
 	 * @param courseId
 	 * @return
 	 */
-	@Delete("delete FROM courses where owner=#{owner} and courseId = #{courseId}")
-	public int deleteCourses(@Param("owner") String owner,@Param("courseId") String courseId);
+	@Delete("delete FROM courses where partitionId=#{partitionId} and courseId = #{courseId}")
+	public int deleteCourses(@Param("partitionId") String partitionId,@Param("courseId") String courseId);
 
 	
-	@Update("update courses set status=#{status} where owner=#{owner} and courseId = #{courseId}")
+	@Update("update courses set status=#{status} where partitionId=#{partitionId} and courseId = #{courseId}")
 	public int updateStatus(Courses courses);
 	
 	@Update("update originalPrice=#{originalPrice},realPrice=#{realPrice}"
-			+"where owner=#{owner} and courseId = #{courseId} ")
+			+"where partitionId=#{partitionId} and courseId = #{courseId} ")
 	public int updatePrice(Courses courses);
 	
 }
