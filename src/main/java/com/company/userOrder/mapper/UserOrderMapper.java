@@ -15,27 +15,31 @@ import com.company.userOrder.domain.UserOrder;
 @Mapper
 public interface UserOrderMapper {
 	
-	@Insert("insert into userorder(createTime,userId,orderId,category,status,orderData,updateTime) values(#{createTime},#{userId},#{orderId},#{category},#{status},#{orderData},#{updateTime})")
+	@Insert("insert into userorder(createTime,userId,orderId,category,status,orderDataType,orderData,updateTime) values(#{createTime},#{userId},#{orderId},#{category},#{status},#{orderDataType},#{orderData},#{updateTime})")
 	public void insertUserOrder(UserOrder userOrder);
 	
-	@Update("update userorder set category=#{category},status=#{status},orderData=#{orderData},updateTime=#{updateTime} where createTime=#{createTime},userId=#{userId},orderId=#{orderId}")
+	@Update("update userorder set category=#{category},status=#{status},orderDataType=#{orderDataType},orderData=#{orderData},updateTime=#{updateTime} where createTime=#{createTime} and userId=#{userId} and orderId=#{orderId}")
 	public int updateUserOrder(UserOrder userOrder);
 	
 	
-	@Update("update userorder set status=#{status},updateTime=#{updateTime} where createTime=#{createTime},userId=#{userId},orderId=#{orderId}")
+	@Update("update userorder set status=#{status},updateTime=#{updateTime} where createTime=#{createTime} and userId=#{userId} and orderId=#{orderId}")
 	public int updateUserOrderStatus(UserOrder userOrder);
 	
 	
-	@Delete("delete from  userorder  where createTime=#{createTime},userId=#{userId},orderId=#{orderId}")
+	@Delete("delete from  userorder  where createTime=#{createTime} and userId=#{userId} and orderId=#{orderId}")
 	public int delUserOrder(UserOrder userOrder);
 	
-	@Select("select * from  userorder  where createTime=#{createTime},userId=#{userId},orderId=#{orderId}")
+	@Select("select createTime from  userorder  where createTime=#{createTime} and userId=#{userId} and orderId=#{orderId}")
 	public UserOrder selectUserOrderById(UserOrder userOrder);
 	
-	@Select("select * from  userorder  where createTime between #{startCreateTime} and #{endCreateTime} ,userId=#{userId} order by createTime desc,userid desc")
+	@Select("select count(*) from userorder where createTime=#{createTime} and userId=#{userId} and orderId=#{orderId}")
+	public int selectCountById(UserOrder userOrder);
+	
+	
+	@Select("select * from  userorder  where createTime between #{startCreateTime} and #{endCreateTime} and userId=#{userId} order by createTime desc,userid desc")
 	public List<UserOrder> selOrdersByUser(@Param("startCreateTime") Date startCreateTime,@Param("endCreateTime") Date endCreateTime,@Param("userId") String userid);
 	
-	@Select("select * from  userorder  where createTime between #{startCreateTime} and #{endCreateTime} ,userId=#{userId} and status = #{status} order by createTime desc")
+	@Select("select * from  userorder  where createTime between #{startCreateTime} and #{endCreateTime} and userId=#{userId} and status = #{status} order by createTime desc")
 	public List<UserOrder> selOrderByUserStatus(@Param("startCreateTime") Date startCreateTime,@Param("endCreateTime") Date endCreateTime,@Param("userId") String userid,@Param("status") int status);
 	
 }

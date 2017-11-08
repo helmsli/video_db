@@ -11,8 +11,8 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan ("com.company.videodb")
-@MapperScan ("com.company.videodb.mapper")
+@MapperScan ({"com.company.videodb.mapper","com.company.userOrder.mapper"})
+@ComponentScan ("com.company.videodb,com.company.userOrder")
 //@ImportResource ({ "classpath:hessian/hessian-client.xml", "classpath:hessian/hessian-server.xml" })
 public class VideoDbApplication {
 

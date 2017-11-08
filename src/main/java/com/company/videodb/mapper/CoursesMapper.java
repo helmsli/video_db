@@ -19,10 +19,10 @@ public interface CoursesMapper {
 	 * @param courses
 	 */
 	@Insert("INSERT INTO courses(partitionId,courseId,title,courseInfo,courseChapter,detail,fitPeople,"
-			+ "searchKeys,catrgory,courseAvatar,difficultyLevel,owner,createTime,originalPrice,realPrice,"
+			+ "searchKeys,category,courseAvatar,difficultyLevel,owner,createTime,originalPrice,realPrice,"
 			+ "expireDate,priceVer,checkCrc,status,teacherName,teacherResume) VALUES("
-			+ "#{courseId},#{title},#{courseInfo},#{courseChapter},#{detail},#{fitPeople},"
-			+ "#{searchKeys},#{catrgory},#{courseAvatar},#{difficultyLevel},#{owner},#{createTime},#{originalPrice},#{realPrice},"
+			+ "#{partitionId},#{courseId},#{title},#{courseInfo},#{courseChapter},#{detail},#{fitPeople},"
+			+ "#{searchKeys},#{category},#{courseAvatar},#{difficultyLevel},#{owner},#{createTime},#{originalPrice},#{realPrice},"
 			+ "#{expireDate},#{priceVer},#{checkCrc},#{status},#{teacherName},#{teacherResume})")	   
 	public void insertCourses(Courses courses);
 	/**
@@ -32,6 +32,9 @@ public interface CoursesMapper {
 	 */
 	@Select("SELECT * FROM courses where partitionId=#{partitionId} and courseId = #{courseId} and owner=#{owner} ")
 	public Courses selectCoursesByOwner(@Param("owner") String owner,@Param("partitionId") String partitionId,@Param("courseId") String courseId);
+	
+	@Select("SELECT count(*) FROM courses where partitionId=#{partitionId} and courseId = #{courseId} and owner=#{owner} ")
+	public int selectCount(@Param("owner") String owner,@Param("partitionId") String partitionId,@Param("courseId") String courseId);
 	
 	
 	/**
@@ -49,7 +52,7 @@ public interface CoursesMapper {
 	 */
 	@Update("update courses set "
 			+ "title=#{title},courseInfo=#{courseInfo},courseChapter=#{courseChapter},detail=#{detail},"
-			+ "fitPeople=#{fitPeople},searchKeys=#{searchKeys},catrgory=#{catrgory},courseAvatar=#{courseAvatar},"
+			+ "fitPeople=#{fitPeople},searchKeys=#{searchKeys},category=#{category},courseAvatar=#{courseAvatar},"
 			+ "difficultyLevel=#{difficultyLevel},owner=#{owner},createTime=#{createTime},originalPrice=#{originalPrice},"
 			+ "realPrice=#{realPrice},expireDate=#{expireDate},priceVer=#{priceVer},checkCrc=#{checkCrc},status=#{status} ,teacherName=#{teacherName},teacherResume=#{teacherResume} where partitionId=#{partitionId} and courseId = #{courseId}")
 	public int updateCourses(Courses courses);	

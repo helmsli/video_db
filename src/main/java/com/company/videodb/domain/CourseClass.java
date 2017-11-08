@@ -3,6 +3,8 @@ package com.company.videodb.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.util.StringUtils;
+
 /**
  * Model class of 一节课.
  * 
@@ -126,6 +128,10 @@ public class CourseClass implements Serializable {
 
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
+		if(!StringUtils.isEmpty(courseId)&&courseId.length()>=7)
+		{
+			this.partitionId = courseId.substring(courseId.length() - 7, courseId.length() - 4);
+		}
 	}
 
 	public String getChapterId() {

@@ -34,6 +34,7 @@ public class UserOrder implements Serializable {
 
 	private Date updateTime;
 
+	private String orderDataType;
 	/** 订单数据. */
 	private String orderData;
 
@@ -100,6 +101,15 @@ public class UserOrder implements Serializable {
 		this.updateTime = formatDate(updateTime);
 	}
 
+	
+	public String getOrderDataType() {
+		return orderDataType;
+	}
+
+	public void setOrderDataType(String orderDataType) {
+		this.orderDataType = orderDataType;
+	}
+
 	protected Date formatDate(Date sourceDate) {
 		if (sourceDate != null) {
 			Calendar calenCreate = Calendar.getInstance();
@@ -113,7 +123,10 @@ public class UserOrder implements Serializable {
 	@Override
 	public String toString() {
 		return "UserOrder [createTime=" + createTime + ", userId=" + userId + ", orderId=" + orderId + ", category="
-				+ category + ", status=" + status + ", orderData=" + orderData + "]";
+				+ category + ", status=" + status + ", updateTime=" + updateTime + ", orderDataType=" + orderDataType
+				+ ", orderData=" + orderData + "]";
 	}
+
+	
 
 }

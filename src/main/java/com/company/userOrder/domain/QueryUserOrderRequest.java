@@ -3,7 +3,7 @@ package com.company.userOrder.domain;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.company.dbplatform.domain.QueryPageRequest;
+import com.company.userOrderPlatform.domain.QueryPageRequest;
 
 public class QueryUserOrderRequest extends QueryPageRequest {
 	/**

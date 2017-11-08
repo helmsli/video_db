@@ -43,7 +43,7 @@ public interface CourseClassMapper {
 			+ "durationSeconds=#{durationSeconds},owner=#{owner},createTime=#{createTime},originalPrice=#{originalPrice},realPrice=#{realPrice},"
 			+ "priceVer=#{priceVer},checkCrc=#{checkCrc},freeDurations=#{freeDurations},"
 			+ "freePercent=#{freePercent},detail=#{detail},vodeoId=#{vodeoId},voidurl=#{voidurl},status=#{status},teacherName=#{teacherName},teacherResume=#{teacherResume}"
-			+"where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
+			+" where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
 	public int updateClass(CourseClass courseClass);
 	
 	/**
@@ -52,11 +52,11 @@ public interface CourseClassMapper {
 	 * @return
 	 */
 	@Update("update courseClass set status=#{status}"
-			+"where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
+			+" where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
 	public int updateStatus(CourseClass courseClass);
 	
 	@Update("update originalPrice=#{originalPrice},realPrice=#{realPrice}"
-			+"where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
+			+" where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
 	public int updatePrice(CourseClass courseClass);
 	
 	

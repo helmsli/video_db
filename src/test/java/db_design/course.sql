@@ -66,7 +66,7 @@ CREATE TABLE courseClass
 	teacherName varchar(256),
 	-- 保存老师的信息，是个Json字符串
 	teacherResume varchar(2048) COMMENT '保存老师的信息，是个Json字符串'
-) COMMENT = '用来保存课程的静态数据'
+) ENGINE = InnoDB COMMENT = '用来保存课程的静态数据'
 PARTITION BY KEY(partitionId)
 PARTITIONS 20;
 
@@ -115,7 +115,7 @@ CREATE TABLE courses
 	teacherName varchar(256),
 	-- 保存老师的信息，是个Json字符串
 	teacherResume varchar(2048) COMMENT '保存老师的信息，是个Json字符串'
-)
+) ENGINE = InnoDB
 PARTITION BY KEY(partitionId)
 PARTITIONS 20;
 
@@ -128,8 +128,10 @@ CREATE TABLE userOrder
 	orderId varchar(128) COMMENT '订单编号',
 	category varchar(64),
 	status int,
-	orderData varchar(2048)
-)
+	orderDataType varchar(256),
+	orderData blob,
+	updateTime datetime
+) ENGINE = InnoDB
 PARTITION BY  range (to_days(createTime))  
     SUBPARTITION BY KEY(userId)
     SUBPARTITIONS 100

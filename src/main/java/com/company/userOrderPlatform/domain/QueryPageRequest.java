@@ -1,4 +1,4 @@
-package com.company.dbplatform.domain;
+package com.company.userOrderPlatform.domain;
 
 import java.io.Serializable;
 

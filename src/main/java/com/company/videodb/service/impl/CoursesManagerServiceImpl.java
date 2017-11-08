@@ -1,5 +1,6 @@
 package com.company.videodb.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -284,6 +285,7 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		//如果数据库中不存在数据，则插入
 		if(processResult.getRetCode()==VideodbConst.RESULT_Error_dbNotExist)
 		{
+			courses.setCreateTime(Calendar.getInstance().getTime());
 			String newCrc = createCoureseCrc(courses);
 			courses.setCheckCrc(newCrc);
 			coursesMapper.insertCourses(courses);
@@ -303,6 +305,7 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 			}
 			
 			dbCourses = getCourses(courses,dbCourses);
+			dbCourses.setCreateTime(Calendar.getInstance().getTime());
 			String newCrc = createCoureseCrc(dbCourses);
 			dbCourses.setCheckCrc(newCrc);
 			int updateNum = coursesMapper.updateCourses(dbCourses);
@@ -337,15 +340,16 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 				}
 				dbCourseClass = getCourseClass(courseClass,dbCourseClass);
 				String checkCrc = this.createCoureseClassCrc(dbCourseClass);
+				dbCourseClass.setCreateTime(Calendar.getInstance().getTime());
 				dbCourseClass.setCheckCrc(checkCrc);
 				courseClassMapper.updateClass(dbCourseClass);
 			}
 			//如果不存在，则插入
 			else
 			{
+				courseClass.setCreateTime(Calendar.getInstance().getTime());
 				String checkCrc = this.createCoureseClassCrc(courseClass);
 				courseClass.setCheckCrc(checkCrc);
-				
 				courseClassMapper.insertCourseClass(courseClass);
 			}
 		}

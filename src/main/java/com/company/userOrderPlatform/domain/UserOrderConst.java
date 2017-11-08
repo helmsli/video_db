@@ -1,4 +1,4 @@
-package com.company.dbplatform.domain;
+package com.company.userOrderPlatform.domain;
 
 public class UserOrderConst {
 	 public static final int RESULT_SUCCESS = 0;

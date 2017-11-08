@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.company.dbplatform.domain.UserOrderConst;
 import com.company.userOrder.domain.QueryUserOrderRequest;
 import com.company.userOrder.domain.UserOrder;
 import com.company.userOrder.mapper.UserOrderMapper;
 import com.company.userOrder.service.UserOrderDbService;
+import com.company.userOrderPlatform.domain.UserOrderConst;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -66,8 +66,8 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 		// TODO Auto-generated method stub
 		ProcessResult processResult = getDefaultErrorResult();
 
-		UserOrder queryUserOrder = userOrderMapper.selectUserOrderById(userOrder);
-		if(queryUserOrder!=null)
+		int rNumbers = userOrderMapper.selectCountById(userOrder);
+		if(rNumbers>0)
 		{
 			int updateNumbers = userOrderMapper.updateUserOrder(userOrder);
 			if(updateNumbers==1)

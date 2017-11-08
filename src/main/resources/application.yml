@@ -1,7 +1,7 @@
 spring:
   datasource:
-    name: lottery_db_name
-    url: jdbc:mysql://127.0.0.1:3306/security_common
+    name: usercourse
+    url: jdbc:mysql://127.0.0.1:3306/usercourse
     username: cmanager
     password: cmanager
     driver-class-name: com.mysql.jdbc.Driver
