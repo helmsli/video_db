@@ -88,7 +88,7 @@ CREATE TABLE courses
 	-- 标签以\分割，可以保存多个标签，用于视频的关键字搜索
 	searchKeys varchar(128) COMMENT '标签以\分割，可以保存多个标签，用于视频的关键字搜索',
 	-- 视频分类，以/分割
-	catrgory varchar(256) COMMENT '视频分类，以/分割',
+	category varchar(256) COMMENT '视频分类，以/分割',
 	courseAvatar varchar(64),
 	-- 初级/中级/高级
 	difficultyLevel varchar(32) COMMENT '初级/中级/高级',

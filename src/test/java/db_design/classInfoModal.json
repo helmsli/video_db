@@ -1,0 +1,49 @@
+CourseInfo:{
+		courseId:
+		title:'java高发',
+		courseInfo:"",//简介
+		category:''//课程分类或/分类ID，
+		expireDate:'有效时间',
+		originalPrice:'发布的原始价格',
+		realPrice:'成交价格'
+		detail:'详细'
+		searchKeys:'',//标签
+		fitPeople:'',//适用人群
+		courseAvatar:'',
+		difficultyLevel:'',//难度级别
+		courseChapter:capterInfo,
+		courseChapterList:[[
+			chapterId;			
+			courseList:[
+			{				
+					classId:
+					category:0, //课时类型
+					classTitle:'',//课时标题
+					classDetail:'',//课时详细
+					originalPrice:'发布的原始价格',
+					realPrice:'成交价格'
+					videoUrl:''//视频地址
+					vodeoId:
+					
+			
+			}
+		]]
+]
+
+}
+
+
+courseInfo:{
+		course:{},
+		
+}
+
+
+
+1.修改课程，不需要课时，提供的接口查课程
+2.修改课时，不需要课程，查询课时，学员和老师使用同一个接口；
+3.需要全的；查询全的；
+
+教师中心的课程按照更新时间排序；
+
+如果课程章节信息；(一个课程限制50个课时左右)

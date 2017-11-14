@@ -13,6 +13,7 @@ public class QueryUserOrderRequest extends QueryPageRequest {
 	private Date startCreateTime;
 	private Date endCreateTime;
 	private String userid;
+	private String category;
 	private int status;
 	public Date getStartCreateTime() {
 		return startCreateTime;
@@ -40,6 +41,13 @@ public class QueryUserOrderRequest extends QueryPageRequest {
 		this.status = status;
 	}
 	
+	
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	protected Date formatDate(Date sourceDate)
 	{
 		if(sourceDate!=null)
@@ -51,4 +59,10 @@ public class QueryUserOrderRequest extends QueryPageRequest {
 		}
 		return sourceDate;
 	}
+	@Override
+	public String toString() {
+		return "QueryUserOrderRequest [startCreateTime=" + startCreateTime + ", endCreateTime=" + endCreateTime
+				+ ", userid=" + userid + ", category=" + category + ", status=" + status + "]";
+	}
+	
 }

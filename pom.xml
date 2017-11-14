@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.company</groupId>
-	<artifactId>video_db</artifactId>
+	<artifactId>course_db</artifactId>
 	<version>1.0.0.1</version>
 	<packaging>jar</packaging>
 
-	<name>video_db</name>
-	<description>video_db for Spring Boot</description>
+	<name>course_db</name>
+	<description>course_db for Spring Boot</description>
 	<repositories>
 		<repository>
 			<id>local</id>
@@ -49,6 +49,7 @@
 			<artifactId>nnl-commons</artifactId>
 			<version>1.9.1</version>
 		</dependency>
+		
 		<!-- test dependencies <dependency> <groupId>org.springframework.boot</groupId> 
 			<artifactId>spring-boot-starter-test</artifactId> <scope>test</scope> </dependency> -->
 
@@ -70,7 +71,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-		<!--mybatis 分页查询  -->
+		<!--mybatis 分页查询 -->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
@@ -100,6 +101,42 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<!-- delete file="${project.build.directory}/classes/jdbc.properties" 
+									/ <copy file="${project.build.outputDirectory}/application.properties" tofile="${project.build.directory}/application.properties" 
+									/> <copy file="${project.build.outputDirectory}/application.yml" tofile="${project.build.directory}/application.yml" 
+									/> -->
+								<copy todir="${project.build.directory}" overwrite="true">
+									<fileset dir="src/main/resources">
+										<include name="**/*.properties" />
+										<include name="*.yml" />
+										<include name="*.sh" />
+									</fileset>
+									<fileset dir="src/test/java/db_design">
+										<include name="*.sql" />
+									</fileset>
+								</copy>
+								<replace token="xxxx.jar" value="${project.build.finalName}.jar">
+									<fileset dir="${project.build.directory}">
+										<include name="*.sh" />
+									</fileset>
+								</replace>
+
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 		<!-- 引入第三方包，打包需要引入 -->
 		<resources>
@@ -115,7 +152,8 @@
 				<targetPath>BOOT-INF/classes/</targetPath>
 			</resource>
 		</resources>
-
+		<directory>target/${project.version}</directory>
+		<outputDirectory>target/classes</outputDirectory>
 	</build>
 
 

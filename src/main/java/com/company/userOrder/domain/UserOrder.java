@@ -1,6 +1,7 @@
 package com.company.userOrder.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -45,6 +46,11 @@ public class UserOrder implements Serializable {
 
 	public Date getCreateTime() {
 		return createTime;
+	}
+
+	public void setConstCreateTime() {
+		Date date = getConstCreateDate();
+		this.createTime = date;
 	}
 
 	public void setCreateTime(Date createTime) {
@@ -101,7 +107,6 @@ public class UserOrder implements Serializable {
 		this.updateTime = formatDate(updateTime);
 	}
 
-	
 	public String getOrderDataType() {
 		return orderDataType;
 	}
@@ -120,13 +125,24 @@ public class UserOrder implements Serializable {
 		return sourceDate;
 	}
 
+	/**
+	 * 构造一个初始时间
+	 * @return
+	 */
+	public Date getConstCreateDate() {
+		Calendar calenCreate = Calendar.getInstance();
+		calenCreate.set(2017, 11, 30, 0, 0, 0);
+		calenCreate.set(Calendar.MILLISECOND, 0);
+		return calenCreate.getTime();
+
+	
+	}
+
 	@Override
 	public String toString() {
 		return "UserOrder [createTime=" + createTime + ", userId=" + userId + ", orderId=" + orderId + ", category="
 				+ category + ", status=" + status + ", updateTime=" + updateTime + ", orderDataType=" + orderDataType
 				+ ", orderData=" + orderData + "]";
 	}
-
-	
 
 }
