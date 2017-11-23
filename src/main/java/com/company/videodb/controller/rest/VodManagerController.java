@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.company.videodb.Const.VideodbConst;
 import com.company.videodb.domain.CourseClass;
 import com.company.videodb.domain.Courses;
+import com.company.videodb.mapper.CourseClassMapper;
+import com.company.videodb.mapper.CoursesMapper;
 import com.company.videodb.service.CoursesManagerService;
 import com.google.gson.reflect.TypeToken;
 import com.xinwei.nnl.common.domain.JsonRequest;
@@ -25,6 +28,10 @@ import com.xinwei.nnl.common.util.JsonUtil;
 public class VodManagerController {
 	@Resource(name="coursesManagerService")
 	private CoursesManagerService coursesManagerService;
+	@Autowired
+	private CoursesMapper coursesMapper;
+	@Autowired
+	private CourseClassMapper courseClassMapper;
 	/**
 	 * 配置运行库中的数据
 	 * @param courseId
@@ -107,5 +114,65 @@ public class VodManagerController {
 			e.printStackTrace();
 		}
 		return processResult;
+	}
+    
+	@RequestMapping(method = RequestMethod.GET,value = "{dbid}/{courseId}/getCourse")
+	public  ProcessResult getCourse(@PathVariable String dbid,@PathVariable String courseId) {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
+		try {
+		//	List<CourseClass> courseClassList =JsonUtil.fromJson(JsonRequest.getJsonString(), new TypeToken<List<CourseClass>>() {}.getType());
+			String partitionId = Courses.changePrititionId(courseId);
+			processResult= coursesManagerService.queryCourses(partitionId, courseId);
+			toJsonProcessResult(processResult);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return processResult;
+	}
+
+	@RequestMapping(method = RequestMethod.GET,value = "{dbid}/{courseId}/getClass")
+	public  ProcessResult getCourseClass(@PathVariable String dbid,@PathVariable String courseId) {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
+		try {
+			String partitionId = Courses.changePrititionId(courseId);
+			processResult= coursesManagerService.queryClass(partitionId, courseId);
+			toJsonProcessResult(processResult);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return processResult;
+	}
+	@RequestMapping(method = RequestMethod.GET,value = "{dbid}/{courseId}/{classId}getOneClass")
+	public  ProcessResult getOneClass(@PathVariable String dbid,@PathVariable String courseId,@PathVariable String classId) {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
+		try {
+			
+			CourseClass courseClass= courseClassMapper.selectByClassid(Courses.changePrititionId(courseId), courseId, classId);
+			if(courseClass!=null)
+			{
+				processResult.setResponseInfo(courseClass);
+				processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
+			}
+			toJsonProcessResult(processResult);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return processResult;
+	}
+
+	protected void toJsonProcessResult(ProcessResult processResult) {
+		if (processResult.getRetCode() == 0) {
+
+			Object object = processResult.getResponseInfo();
+			if (object != null) {
+				processResult.setResponseInfo(JsonUtil.toJson(object));
+			}
+		}
 	}
 } 

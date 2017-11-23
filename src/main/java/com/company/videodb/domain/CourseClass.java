@@ -32,7 +32,7 @@ public class CourseClass implements Serializable {
 	/**
 	 * 分区ID
 	 */
-    private String partitionId;
+    private  String partitionId;
 	
 	/** 课时ID，标识一个视频的唯一编号. */
 	private String classId;
@@ -78,7 +78,7 @@ public class CourseClass implements Serializable {
 	private long priceVer;
 
 	/** 课程保护字段. */
-	private String checkCrc;
+	private transient String checkCrc;
 
 	/** 免费观看的时长. 秒*/
 	private int freeDurations;

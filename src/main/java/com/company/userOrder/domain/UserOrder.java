@@ -1,11 +1,13 @@
 package com.company.userOrder.domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 /**
  * Model class of userOrder.
@@ -17,6 +19,9 @@ public class UserOrder implements Serializable {
 
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	private transient byte[] orderDataByte;
+	 private  transient final String DEFAULT_CHARSET = "utf-8";
+	
 
 	/** 创建时间. */
 	private Date createTime;
@@ -137,6 +142,33 @@ public class UserOrder implements Serializable {
 
 	
 	}
+	public  byte[] getOrderDataByte() {
+		try {
+			if(!StringUtils.isEmpty(this.getOrderData()))
+			{
+				return getOrderData().getBytes(DEFAULT_CHARSET);
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+				
+	}
+
+	public void setOrderDataByte(byte[] orderDataByte) {
+		//this.orderDataByte = orderDataByte;
+		try {
+			if(orderDataByte!=null)
+			{
+				this.setOrderData(new String(orderDataByte, DEFAULT_CHARSET));
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 
 	@Override
 	public String toString() {

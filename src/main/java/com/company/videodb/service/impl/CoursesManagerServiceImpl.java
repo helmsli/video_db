@@ -326,13 +326,21 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 	protected boolean dbConfigClass(List<CourseClass> courseClassList)
 	{
 		// TODO Auto-generated method stub
+		//删除老的记录信息
+		if(courseClassList.size()>0)
+		{
+			CourseClass dbCourseClass = courseClassList.get(0);
+			this.courseClassMapper.deleteByCourseid(dbCourseClass.getPartitionId(), dbCourseClass.getCourseId());
+		}
 		for(CourseClass courseClass:courseClassList)
 		{
 			
 			//查询课程
-			CourseClass dbCourseClass = courseClassMapper.selectByClassid(courseClass.getPartitionId(), courseClass.getCourseId(), courseClass.getChapterId(), courseClass.getClassId());
+			//CourseClass dbCourseClass = courseClassMapper.selectByClassid(courseClass.getPartitionId(), courseClass.getCourseId(),  courseClass.getClassId());
 			//如果课程存在
-			if(dbCourseClass!=null)
+			//if(dbCourseClass!=null)
+			CourseClass dbCourseClass = null;
+			if(false)
 			{
 				if(!this.checkCoureseClassCrc(dbCourseClass))
 				{
@@ -471,7 +479,31 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		return processResult;
 
 	}
+    
+	@Override
+	public ProcessResult queryClass(String partitionId,String courseId) {
+		/**
+		 * 将状态修改为发布
+		 */
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
+		List<CourseClass> courseLists = this.courseClassMapper.selectByCourseId(partitionId, courseId);
+		if(courseLists!=null)
+		{
+			
+				processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
+				processResult.setResponseInfo(courseLists);
+			
+		}
+		else
+		{
+			processResult.setRetCode(VideodbConst.RESULT_Error_dbNotExist);
+		}
+		return processResult;
 
+	}
+
+	
 	@Override
 	public ProcessResult publishClass(long userId, String courseId, String chapterId, String classId) {
 		/**

@@ -1,5 +1,7 @@
 package com.company.videodb.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,7 +33,16 @@ public interface CourseClassMapper {
 	 * @return
 	 */
 	@Select("SELECT * FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
-	public CourseClass selectByClassid(@Param("partitionId") String partitionId,@Param("courseId") String courseId,@Param("chapterId") String chapterId,@Param("classId") String classId);
+	public CourseClass selectByClassid(@Param("partitionId") String partitionId,@Param("courseId") String courseId,@Param("classId") String classId);
+	
+	/**
+	 * 按照课程查询
+	 * @param partitionId
+	 * @param courseId
+	 * @return
+	 */
+	@Select("SELECT * FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} order by partitionId asc,courseId asc,chapterId asc,classId asc")
+	public List<CourseClass> selectByCourseId(@Param("partitionId") String partitionId,@Param("courseId") String courseId);
 	
 	/**
 	 * 
@@ -69,5 +80,8 @@ public interface CourseClassMapper {
 	 */
 	@Delete("delete  FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
 	public int deleteByClassid(@Param("partitionId") String partitionId,@Param("courseId") String courseId,@Param("chapterId") String chapterId,@Param("classId") String classId);
+	
+	@Delete("delete  FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId}")
+	public int deleteByCourseid(@Param("partitionId") String partitionId,@Param("courseId") String courseId);
 	
 }

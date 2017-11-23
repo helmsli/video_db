@@ -67,7 +67,7 @@ public class Courses implements Serializable {
 	private long priceVer=0;
 
 	/** 课程保护字段. */
-	private String checkCrc;
+	private transient String checkCrc;
 
 	
 	private int status=0;
@@ -88,12 +88,24 @@ public class Courses implements Serializable {
 
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
-		if(!StringUtils.isEmpty(courseId)&&courseId.length()>=7)
-		{
-			this.partitionId = courseId.substring(courseId.length() - 7, courseId.length() - 4);
-		}
+		this.partitionId = changePrititionId(courseId);
 	}
 
+	public static String changePrititionId(String srcCourseId)
+	{
+		String retPartitionId="000";
+		if(!StringUtils.isEmpty(srcCourseId)&&srcCourseId.length()>=7)
+		{
+			 retPartitionId = srcCourseId.substring(srcCourseId.length() - 7, srcCourseId.length() - 4);
+		}
+		return retPartitionId;
+	}
+	
+	public static String getDbId(String courseId)
+	{
+		return courseId.substring(courseId.length() - 4, courseId.length());
+	}
+	
 	public String getTitle() {
 		return title;
 	}

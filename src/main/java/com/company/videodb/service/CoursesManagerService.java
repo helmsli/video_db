@@ -86,4 +86,12 @@ public interface CoursesManagerService {
 	 */
 	public ProcessResult stopSaleClass(long userId,String courseId,String chapterId,String classId);
 	
+	/**
+	 * 
+	 * @param partitionId
+	 * @param courseId
+	 * @return
+	 */
+	public ProcessResult queryClass(String partitionId,String courseId);
+	
 }

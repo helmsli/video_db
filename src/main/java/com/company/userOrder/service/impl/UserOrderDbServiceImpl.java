@@ -1,10 +1,12 @@
 package com.company.userOrder.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.company.userOrder.domain.UserOrder;
 import com.company.userOrder.domain.QueryUserOrderRequest;
 import com.company.userOrder.domain.UserOrder;
 import com.company.userOrder.mapper.UserOrderMapper;
@@ -34,6 +36,7 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 		PageHelper.startPage(queryUserOrderRequest.getPageNum(), queryUserOrderRequest.getPageSize());
 		List<UserOrder> list = userOrderMapper.selOrdersByUser(queryUserOrderRequest.getCategory(),queryUserOrderRequest.getStartCreateTime(),
 				queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserid());
+		
 		PageInfo pageInfo = new PageInfo(list);
 		processResult.setResponseInfo(pageInfo);
 		processResult.setRetCode(UserOrderConst.RESULT_SUCCESS);

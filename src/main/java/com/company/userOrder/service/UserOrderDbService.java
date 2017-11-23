@@ -3,8 +3,9 @@ package com.company.userOrder.service;
 import java.util.Date;
 import java.util.List;
 
-import com.company.userOrder.domain.QueryUserOrderRequest;
 import com.company.userOrder.domain.UserOrder;
+import com.company.userOrder.domain.QueryUserOrderRequest;
+
 import com.xinwei.nnl.common.domain.ProcessResult;
 
 public interface UserOrderDbService {

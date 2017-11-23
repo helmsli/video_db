@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.company.userOrder.domain.QueryUserOrderRequest;
 import com.company.userOrder.domain.UserOrder;
 import com.company.userOrder.service.UserOrderDbService;
@@ -37,7 +38,7 @@ public class UserOrderController {
 		try {
 			queryUserOrderRequest.setCategory(category);
 			processResult = userOrderDbService.selOrdersByUser(queryUserOrderRequest);
-			toJsonSimpleProcessResult(processResult);
+			//toJsonSimpleProcessResult(processResult);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,8 +61,8 @@ public class UserOrderController {
 		processResult.setRetCode(UserOrderConst.RESULT_FAILURE);
 		try {
 			queryUserOrderRequest.setCategory(category);
-			processResult = userOrderDbService.selOrdersByUser(queryUserOrderRequest);
-			toJsonSimpleProcessResult(processResult);
+			processResult = userOrderDbService.selOrderByUserStatus(queryUserOrderRequest);
+			//toJsonSimpleProcessResult(processResult);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
