@@ -2,6 +2,7 @@ package com.company.videodb.service;
 
 import java.util.List;
 
+import com.company.userOrderPlatform.domain.QueryPageRequest;
 import com.company.videodb.domain.CourseClass;
 import com.company.videodb.domain.Courses;
 import com.xinwei.nnl.common.domain.ProcessResult;
@@ -58,6 +59,15 @@ public interface CoursesManagerService {
 	 * @return
 	 */
 	public ProcessResult queryCourses(String partitionId,String courseId);
+	
+	
+	/**
+	 * 查询单个课程信息
+	 * @param courseId
+	 * @return
+	 */
+	public ProcessResult queryAllCourses(QueryPageRequest queryPageRequest);
+	
 	
 	/**
 	 * 查询单个课程

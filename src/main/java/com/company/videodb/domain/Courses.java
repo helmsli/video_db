@@ -1,6 +1,8 @@
 package com.company.videodb.domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.util.StringUtils;
@@ -12,7 +14,8 @@ import org.springframework.util.StringUtils;
  * @version $Id$
  */
 public class Courses implements Serializable {
-
+	 private  transient final String DEFAULT_CHARSET = "utf-8";
+		
 	/**
 	 * 分区ID
 	 */
@@ -30,6 +33,11 @@ public class Courses implements Serializable {
 	/** 课程章节信息. */
 	private String courseChapter;
 
+	/** 课程章节信息. */
+	private transient byte[] courseChapterByte;
+
+	/** 课程详情. */
+	private transient byte[] detailByte;
 	/** 课程详情. */
 	private String detail;
 
@@ -80,6 +88,7 @@ public class Courses implements Serializable {
 	 * Constructor.
 	 */
 	public Courses() {
+		this.setCreateTime(Calendar.getInstance().getTime());
 	}
 
 	public String getCourseId() {
@@ -280,6 +289,62 @@ public class Courses implements Serializable {
 				+ ", realPrice=" + realPrice + ", expireDate=" + expireDate + ", priceVer=" + priceVer + ", checkCrc="
 				+ checkCrc + ", status=" + status + ", teacherName=" + teacherName + ", teacherResume=" + teacherResume
 				+ "]";
+	}
+
+	public byte[] getCourseChapterByte() {
+		try {
+			if(!StringUtils.isEmpty(this.getCourseChapter()))
+			{
+				return getCourseChapter().getBytes(DEFAULT_CHARSET);
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	
+	}
+
+	public void setCourseChapterByte(byte[] courseChapterByte) {
+		//this.orderDataByte = orderDataByte;
+				try {
+					if(courseChapterByte!=null)
+					{
+						this.setCourseChapter(new String(courseChapterByte, DEFAULT_CHARSET));
+					}
+					this.courseChapterByte=courseChapterByte;
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	}
+
+	public byte[] getDetailByte() {
+		try {
+			if(!StringUtils.isEmpty(this.getDetail()))
+			{
+				return getDetail().getBytes(DEFAULT_CHARSET);
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	
+	}
+
+	public void setDetailByte(byte[] detailByte) {
+		try {
+			if(detailByte!=null)
+			{
+				this.setDetail(new String(detailByte, DEFAULT_CHARSET));
+				
+			}
+			this.detailByte=detailByte;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	

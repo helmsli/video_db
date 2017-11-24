@@ -24,7 +24,7 @@ public interface CourseClassMapper {
 			+ "freePercent,detail,vodeoId,voidurl,status,teacherName,teacherResume) VALUES("
 			+ "#{partitionId},#{classId},#{courseId},#{chapterId},#{courseseqId},#{classTitle},#{searchKeys},"
 			+ "#{durationSeconds},#{owner},#{createTime},#{originalPrice},#{realPrice},#{priceVer},#{checkCrc},#{freeDurations},"
-			+ "#{freePercent},#{detail},#{vodeoId},#{voidurl},#{status},#{teacherName},#{teacherResume})")	   
+			+ "#{freePercent},#{detailByte},#{vodeoId},#{voidurl},#{status},#{teacherName},#{teacherResume})")	   
 	public void insertCourseClass(CourseClass courseClass);
 	
 	/**
@@ -32,7 +32,10 @@ public interface CourseClassMapper {
 	 * @param courseId
 	 * @return
 	 */
-	@Select("SELECT * FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
+	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,classTitle,searchKeys,"
+			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
+			+ "freePercent,detail as detailByte,vodeoId,voidurl,status,teacherName,teacherResume "
+			+ "FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
 	public CourseClass selectByClassid(@Param("partitionId") String partitionId,@Param("courseId") String courseId,@Param("classId") String classId);
 	
 	/**
@@ -41,7 +44,10 @@ public interface CourseClassMapper {
 	 * @param courseId
 	 * @return
 	 */
-	@Select("SELECT * FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} order by partitionId asc,courseId asc,chapterId asc,classId asc")
+	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,classTitle,searchKeys,"
+			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
+			+ "freePercent,detail as detailByte,vodeoId,voidurl,status,teacherName,teacherResume "
+			+ " FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} order by partitionId asc,courseId asc,chapterId asc,classId asc")
 	public List<CourseClass> selectByCourseId(@Param("partitionId") String partitionId,@Param("courseId") String courseId);
 	
 	/**
@@ -53,7 +59,7 @@ public interface CourseClassMapper {
 			 +"courseseqId=#{courseseqId},classTitle=#{classTitle},searchKeys=#{searchKeys},"
 			+ "durationSeconds=#{durationSeconds},owner=#{owner},createTime=#{createTime},originalPrice=#{originalPrice},realPrice=#{realPrice},"
 			+ "priceVer=#{priceVer},checkCrc=#{checkCrc},freeDurations=#{freeDurations},"
-			+ "freePercent=#{freePercent},detail=#{detail},vodeoId=#{vodeoId},voidurl=#{voidurl},status=#{status},teacherName=#{teacherName},teacherResume=#{teacherResume}"
+			+ "freePercent=#{freePercent},detail=#{detailByte},vodeoId=#{vodeoId},voidurl=#{voidurl},status=#{status},teacherName=#{teacherName},teacherResume=#{teacherResume}"
 			+" where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
 	public int updateClass(CourseClass courseClass);
 	

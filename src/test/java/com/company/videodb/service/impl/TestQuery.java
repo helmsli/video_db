@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.company.userOrder.domain.DbUserOrder;
+
 import com.company.userOrder.domain.QueryUserOrderRequest;
 import com.company.userOrder.domain.UserOrder;
+import com.company.userOrderPlatform.domain.QueryPageRequest;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -45,7 +46,8 @@ public class TestQuery {
 		TestQuery testQuery = new TestQuery();
 		testQuery.getUserOrder();
 		testQuery.getCourse("15001040001");
-		testQuery.getAllCourse("15001040001");;
+		testQuery.getAllClass("15001040001");;
+		testQuery.getAllCourse();
 	}
 	
 	public void getUserOrder()
@@ -78,7 +80,7 @@ public class TestQuery {
 		System.out.println(processResult);
 
 	}
-	public void getAllCourse(String courseId)
+	public void getAllClass(String courseId)
 	{
 		// TODO Auto-generated method stub
 		String baseUrl = "http://huaxiahuizhi.cn:8080/studentCourse";
@@ -87,6 +89,18 @@ public class TestQuery {
 				ProcessResult.class);
 		System.out.println(processResult);
 
+	}
+	public void getAllCourse()
+	{
+		///{category}/{dbId}/{orderId}/startOrder
+		String baseUrl = "http://huaxiahuizhi.cn:8080/vodManagerDb";
+		QueryPageRequest queryPageRequest = new QueryPageRequest();
+		queryPageRequest.setPageNum(1);
+		queryPageRequest.setPageSize(100);
+		ProcessResult processResult = restTemplate.postForObject(
+				baseUrl  + "/getAllCourse",queryPageRequest,
+				ProcessResult.class);
+		System.out.println("allcourse:" + processResult);
 	}
 	// 15001040001
 }

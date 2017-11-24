@@ -1,6 +1,7 @@
 package com.company.videodb.domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.springframework.util.StringUtils;
@@ -12,6 +13,8 @@ import org.springframework.util.StringUtils;
  * @version $Id$
  */
 public class CourseClass implements Serializable {
+	 private  transient final String DEFAULT_CHARSET = "utf-8";
+		
 	/**
 	 * 准备发布
 	 */
@@ -51,6 +54,10 @@ public class CourseClass implements Serializable {
 	
 	/** 课时标题. */
 	private String classTitle;
+	
+	/** 课程详情. */
+	private transient byte[] detailByte;
+	
 
 	/** 课时详情. */
 	private String classDetail;
@@ -325,6 +332,35 @@ public class CourseClass implements Serializable {
 	}
 
 	
+
+	public byte[] getDetailByte() {
+		try {
+			if(!StringUtils.isEmpty(this.getDetail()))
+			{
+				return getDetail().getBytes(DEFAULT_CHARSET);
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	
+	}
+
+	public void setDetailByte(byte[] detailByte) {
+		try {
+			if(detailByte!=null)
+			{
+				this.setDetail(new String(detailByte, DEFAULT_CHARSET));
+				
+			}
+			this.detailByte=detailByte;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	
 

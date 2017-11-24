@@ -10,13 +10,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-
+import com.company.userOrder.domain.UserOrder;
+import com.company.userOrderPlatform.domain.QueryPageRequest;
+import com.company.userOrderPlatform.domain.UserOrderConst;
 import com.company.videodb.Const.VideodbConst;
 import com.company.videodb.domain.CourseClass;
 import com.company.videodb.domain.Courses;
 import com.company.videodb.mapper.CourseClassMapper;
 import com.company.videodb.mapper.CoursesMapper;
 import com.company.videodb.service.CoursesManagerService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xinwei.nnl.common.domain.ProcessResult;
 @Service("coursesManagerService")
 public class CoursesManagerServiceImpl implements CoursesManagerService {
@@ -547,5 +551,21 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public ProcessResult queryAllCourses(QueryPageRequest queryPageRequest) {
+		ProcessResult processResult = getDefaultErrorResult();
 
+		PageHelper.startPage(queryPageRequest.getPageNum(), queryPageRequest.getPageSize());
+		List<Courses> list = this.coursesMapper.selectAllCourses();
+		PageInfo pageInfo = new PageInfo(list);
+		processResult.setResponseInfo(pageInfo);
+		processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
+		return processResult;
+
+	}
+	protected ProcessResult getDefaultErrorResult() {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
+		return processResult;
+	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.company.userOrderPlatform.domain.QueryPageRequest;
 import com.company.videodb.Const.VideodbConst;
 import com.company.videodb.domain.CourseClass;
 import com.company.videodb.domain.Courses;
@@ -131,7 +132,21 @@ public class VodManagerController {
 		}
 		return processResult;
 	}
-
+    
+	@RequestMapping(method = RequestMethod.POST,value = "/getAllCourse")
+	public  ProcessResult getAllCourse(@RequestBody QueryPageRequest queryPageRequest) {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(VideodbConst.RESULT_FAILURE);
+		try {
+		//	List<CourseClass> courseClassList =JsonUtil.fromJson(JsonRequest.getJsonString(), new TypeToken<List<CourseClass>>() {}.getType());
+			processResult= coursesManagerService.queryAllCourses(queryPageRequest);
+			toJsonProcessResult(processResult);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return processResult;
+	}
 	@RequestMapping(method = RequestMethod.GET,value = "{dbid}/{courseId}/getClass")
 	public  ProcessResult getCourseClass(@PathVariable String dbid,@PathVariable String courseId) {
 		ProcessResult processResult = new ProcessResult();
