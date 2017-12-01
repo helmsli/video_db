@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,10 @@ import com.xinwei.nnl.common.domain.JsonRequest;
 import com.xinwei.nnl.common.domain.ProcessResult;
 import com.xinwei.nnl.common.util.JsonUtil;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+@Api("HelloController 接口")
 @RestController
 @RequestMapping("/vodManagerDb")
 public class VodManagerController {
@@ -50,6 +55,10 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}
@@ -69,6 +78,10 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}
@@ -92,6 +105,10 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}
@@ -113,6 +130,10 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}
@@ -129,10 +150,16 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}
-    
+	
+	@ApiOperation(value="删除用户", notes="根据url的id来指定删除对象")
+	@ApiImplicitParam(name = "queryPageRequest", value = "用户ID", required = true, dataType = "QueryPageRequest")
 	@RequestMapping(method = RequestMethod.POST,value = "/getAllCourse")
 	public  ProcessResult getAllCourse(@RequestBody QueryPageRequest queryPageRequest) {
 		ProcessResult processResult = new ProcessResult();
@@ -144,6 +171,10 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}
@@ -158,6 +189,10 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}
@@ -177,6 +212,10 @@ public class VodManagerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(!StringUtils.isEmpty(e.getMessage()))
+			{
+				processResult.setRetMsg(e.getMessage().substring(0,128));
+			}
 		}
 		return processResult;
 	}

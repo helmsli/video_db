@@ -6,6 +6,7 @@ import java.util.Date;
 import com.company.userOrderPlatform.domain.QueryPageRequest;
 
 public class QueryUserOrderRequest extends QueryPageRequest {
+	public static final int STATUS_NULL=0;
 	/**
 	 * 
 	 */
@@ -14,7 +15,7 @@ public class QueryUserOrderRequest extends QueryPageRequest {
 	private Date endCreateTime;
 	private String userid;
 	private String category;
-	private int status;
+	private int status=STATUS_NULL;
 	public Date getStartCreateTime() {
 		return startCreateTime;
 	}

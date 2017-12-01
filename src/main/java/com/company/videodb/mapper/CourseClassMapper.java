@@ -19,10 +19,10 @@ public interface CourseClassMapper {
 	 * 
 	 * @param CourseClass
 	 */
-	@Insert("INSERT INTO courseClass(partitionId,classId,courseId,chapterId,courseseqId,classTitle,searchKeys,"
+	@Insert("INSERT INTO courseClass(partitionId,classId,courseId,chapterId,courseseqId,category,classTitle,searchKeys,"
 			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
 			+ "freePercent,detail,vodeoId,voidurl,status,teacherName,teacherResume) VALUES("
-			+ "#{partitionId},#{classId},#{courseId},#{chapterId},#{courseseqId},#{classTitle},#{searchKeys},"
+			+ "#{partitionId},#{classId},#{courseId},#{chapterId},#{courseseqId},#{category},#{classTitle},#{searchKeys},"
 			+ "#{durationSeconds},#{owner},#{createTime},#{originalPrice},#{realPrice},#{priceVer},#{checkCrc},#{freeDurations},"
 			+ "#{freePercent},#{detailByte},#{vodeoId},#{voidurl},#{status},#{teacherName},#{teacherResume})")	   
 	public void insertCourseClass(CourseClass courseClass);
@@ -32,7 +32,7 @@ public interface CourseClassMapper {
 	 * @param courseId
 	 * @return
 	 */
-	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,classTitle,searchKeys,"
+	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,category,classTitle,searchKeys,"
 			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
 			+ "freePercent,detail as detailByte,vodeoId,voidurl,status,teacherName,teacherResume "
 			+ "FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
@@ -44,7 +44,7 @@ public interface CourseClassMapper {
 	 * @param courseId
 	 * @return
 	 */
-	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,classTitle,searchKeys,"
+	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,category,classTitle,searchKeys,"
 			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
 			+ "freePercent,detail as detailByte,vodeoId,voidurl,status,teacherName,teacherResume "
 			+ " FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} order by partitionId asc,courseId asc,chapterId asc,classId asc")
@@ -56,7 +56,7 @@ public interface CourseClassMapper {
 	 * @return
 	 */
 	@Update("update courseClass set "
-			 +"courseseqId=#{courseseqId},classTitle=#{classTitle},searchKeys=#{searchKeys},"
+			 +"courseseqId=#{courseseqId},category=#{category},classTitle=#{classTitle},searchKeys=#{searchKeys},"
 			+ "durationSeconds=#{durationSeconds},owner=#{owner},createTime=#{createTime},originalPrice=#{originalPrice},realPrice=#{realPrice},"
 			+ "priceVer=#{priceVer},checkCrc=#{checkCrc},freeDurations=#{freeDurations},"
 			+ "freePercent=#{freePercent},detail=#{detailByte},vodeoId=#{vodeoId},voidurl=#{voidurl},status=#{status},teacherName=#{teacherName},teacherResume=#{teacherResume}"

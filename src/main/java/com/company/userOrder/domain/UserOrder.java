@@ -20,7 +20,11 @@ public class UserOrder implements Serializable {
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	private transient byte[] orderDataByte;
-	 private  transient final String DEFAULT_CHARSET = "utf-8";
+	private  transient final String DEFAULT_CHARSET = "utf-8";
+	
+	public static final  int STATUS_CreateOrder = 1;
+	
+	public static final  int STATUS_FinishOrder = 10240;
 	
 
 	/** 创建时间. */

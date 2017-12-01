@@ -55,7 +55,7 @@ public interface CoursesMapper {
 	@Select("SELECT  partitionId,courseId,title,courseInfo,courseChapter as courseChapterByte,detail as detailByte,fitPeople,"
 			+ "searchKeys,category,courseAvatar,difficultyLevel,owner,createTime,originalPrice,realPrice,"
 			+ "expireDate,priceVer,checkCrc,status,teacherName,teacherResume "
-			+ "FROM courses order by partitionId desc, courseId desc")
+			+ "FROM courses order by createTime desc")
 	public List<Courses> selectAllCourses();
 	
 	/**

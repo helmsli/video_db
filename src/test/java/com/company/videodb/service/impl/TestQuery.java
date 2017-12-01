@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import com.company.userOrder.domain.QueryUserOrderRequest;
 import com.company.userOrder.domain.UserOrder;
 import com.company.userOrderPlatform.domain.QueryPageRequest;
+import com.company.videodb.domain.Courses;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -45,8 +46,8 @@ public class TestQuery {
 		
 		TestQuery testQuery = new TestQuery();
 		testQuery.getUserOrder();
-		testQuery.getCourse("15001040001");
-		testQuery.getAllClass("15001040001");;
+		testQuery.getCourse("10001030001");
+		testQuery.getAllClass("10001030001");;
 		testQuery.getAllCourse();
 	}
 	
@@ -77,9 +78,21 @@ public class TestQuery {
 		ProcessResult processResult = restTemplate.getForObject(
 				baseUrl + "/" + courseId  +  "/queryCourse" ,
 				ProcessResult.class);
-		System.out.println(processResult);
-
+		System.out.println("course:" + processResult);
+		
+		baseUrl = "http://huaxiahuizhi.cn:8080/vodManagerDb";
+		
+		String dbid = Courses.getDbId(courseId);
+		 processResult = restTemplate.getForObject(
+				baseUrl + "/" + dbid + "/" + courseId  +  "/getCourse" ,
+				ProcessResult.class);
+		System.out.println("courseDB:" + processResult);
+       
+		
+		
 	}
+	
+
 	public void getAllClass(String courseId)
 	{
 		// TODO Auto-generated method stub

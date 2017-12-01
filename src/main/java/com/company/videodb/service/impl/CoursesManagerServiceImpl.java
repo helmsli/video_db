@@ -189,7 +189,10 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		{
 			courseClass.setPartitionId(sourceClass.getPartitionId());
 		}
-		
+		if(!StringUtils.isEmpty(sourceClass.getCategory()))
+		{
+			courseClass.setCategory(sourceClass.getCategory());
+		}
 		if(!StringUtils.isEmpty(sourceClass.getChapterId()))
 		{
 			courseClass.setChapterId(courseClass.getChapterId());

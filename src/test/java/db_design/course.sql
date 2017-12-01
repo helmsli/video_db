@@ -4,8 +4,6 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 DROP INDEX idx_courseClass_id ON courseClass;
 DROP INDEX idx_course_id ON courses;
-DROP INDEX Idx_userOrder_orderid ON userData;
-DROP INDEX idx_userOrder_status ON userData;
 DROP INDEX Idx_userOrder_orderid ON userOrder;
 DROP INDEX idx_userOrder_status ON userOrder;
 DROP INDEX idx_userOrderUpdate ON userOrder;
@@ -16,7 +14,6 @@ DROP INDEX idx_userOrderUpdate ON userOrder;
 
 DROP TABLE IF EXISTS courseClass;
 DROP TABLE IF EXISTS courses;
-DROP TABLE IF EXISTS userData;
 DROP TABLE IF EXISTS userOrder;
 
 
@@ -124,32 +121,6 @@ PARTITION BY KEY(partitionId)
 PARTITIONS 20;
 
 
-CREATE TABLE userData
-(
-	createTime datetime,
-	userId varchar(128),
-	-- 订单编号
-	orderId varchar(128) COMMENT '订单编号',
-	category varchar(64),
-	status int,
-	orderDataType varchar(256),
-	orderData blob,
-	updateTime datetime
-) ENGINE = InnoDB
-PARTITION BY  range (to_days(createTime))  
-    SUBPARTITION BY KEY(userId)
-    SUBPARTITIONS 100
- (
-        PARTITION p0 VALUES  LESS THAN (to_days('20171105')),
-	PARTITION p1 VALUES  LESS THAN (to_days('20171205')),
-	PARTITION p2 VALUES  LESS THAN (to_days('20180105')),
-	PARTITION p3 VALUES  LESS THAN (to_days('20180205')),
-	PARTITION p4 VALUES  LESS THAN (to_days('20180305')),
-	PARTITION p5 VALUES  LESS THAN (to_days('20180405')),
-	PARTITION p6 VALUES  LESS THAN MAXVALUE 
-  );
-
-
 CREATE TABLE userOrder
 (
 	createTime datetime,
@@ -181,10 +152,6 @@ PARTITION BY  range (to_days(createTime))
 
 CREATE INDEX idx_courseClass_id ON courseClass (partitionId ASC, courseId ASC, chapterId ASC, classId ASC);
 CREATE INDEX idx_course_id ON courses (partitionId ASC, courseId ASC);
--- 用于按照orderID查询
-CREATE INDEX Idx_userOrder_orderid ON userData ();
--- 用于按照状态查询
-CREATE INDEX idx_userOrder_status ON userData ();
 -- 用于按照orderID查询
 CREATE INDEX Idx_userOrder_orderid ON userOrder (createTime ASC, userId ASC, category ASC, orderId ASC);
 -- 用于按照状态查询
