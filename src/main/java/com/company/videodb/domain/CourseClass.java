@@ -56,7 +56,7 @@ public class CourseClass implements Serializable {
 	private String classTitle;
 	
 	/** 课程详情. */
-	private transient byte[] detailByte;
+	private transient byte[] detailByte=null;
 	
 
 	/** 课时详情. */
@@ -94,7 +94,7 @@ public class CourseClass implements Serializable {
 	private int freePercent;
 	
 	/** 课程详情. */
-	private String detail;
+	private String detail=null;
 
 	/** 视频播放id. */
 	private String vodeoId;
@@ -246,7 +246,26 @@ public class CourseClass implements Serializable {
 	}
 
 	public String getDetail() {
+		
+		if(detail!=null)
+		{
+			return detail;
+		}
+		else
+		{
+			if(this.detailByte!=null)
+			{
+				try {
+					this.setDetail(new String(detailByte, DEFAULT_CHARSET));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
 		return detail;
+		
 	}
 
 	public void setDetail(String detail) {

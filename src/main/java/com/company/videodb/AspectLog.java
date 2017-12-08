@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.company.videodb.service.impl;
+package com.company.videodb;
 
 import java.util.Arrays;
 
@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 //申明是个spring管理的bean
 @Component
 @Order(1)
+
 public class AspectLog {
   private Logger log = LoggerFactory.getLogger(getClass());
   private Gson gson = new Gson();

@@ -31,15 +31,15 @@ public class Courses implements Serializable {
 	private String courseInfo;
 
 	/** 课程章节信息. */
-	private String courseChapter;
+	private String courseChapter=null;
 
 	/** 课程章节信息. */
-	private transient byte[] courseChapterByte;
+	private transient byte[] courseChapterByte=null;
 
 	/** 课程详情. */
-	private transient byte[] detailByte;
+	private transient byte[] detailByte=null;
 	/** 课程详情. */
-	private String detail;
+	private String detail=null;
 
 	/** 适用人群. */
 	private String fitPeople;
@@ -134,6 +134,22 @@ public class Courses implements Serializable {
 	}
 
 	public String getCourseChapter() {
+		if(!StringUtils.isEmpty(courseChapter))
+		{
+			return courseChapter;
+		}
+		else
+		{
+			if(this.courseChapterByte!=null)
+			{
+				try {
+					return new String(courseChapterByte, DEFAULT_CHARSET);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		return courseChapter;
 	}
 
@@ -142,6 +158,22 @@ public class Courses implements Serializable {
 	}
 
 	public String getDetail() {
+		if(!StringUtils.isEmpty(detail))
+		{
+			return detail;
+		}
+		else
+		{
+			if(this.detailByte!=null)
+			{
+				try {
+					return new String(detailByte, DEFAULT_CHARSET);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		return detail;
 	}
 

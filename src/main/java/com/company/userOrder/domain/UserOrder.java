@@ -19,7 +19,7 @@ public class UserOrder implements Serializable {
 
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	private transient byte[] orderDataByte;
+	private transient byte[] orderDataByte=null;
 	private  transient final String DEFAULT_CHARSET = "utf-8";
 	
 	public static final  int STATUS_CreateOrder = 1;
@@ -46,7 +46,7 @@ public class UserOrder implements Serializable {
 
 	private String orderDataType;
 	/** 订单数据. */
-	private String orderData;
+	private String orderData=null;
 
 	public UserOrder() {
 		this.setCreateTime(Calendar.getInstance().getTime());
@@ -101,6 +101,19 @@ public class UserOrder implements Serializable {
 	}
 
 	public String getOrderData() {
+		if(orderData==null)
+		{
+			if(this.orderDataByte!=null)
+			{
+				try {
+					this.setOrderData(new String(orderDataByte, DEFAULT_CHARSET));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+ 
+			}
+		}
 		return orderData;
 	}
 
@@ -167,6 +180,7 @@ public class UserOrder implements Serializable {
 			{
 				this.setOrderData(new String(orderDataByte, DEFAULT_CHARSET));
 			}
+			this.orderDataByte=orderDataByte;
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
