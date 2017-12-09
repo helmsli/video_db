@@ -196,7 +196,7 @@ public class VodManagerController {
 		}
 		return processResult;
 	}
-	@RequestMapping(method = RequestMethod.GET,value = "{dbid}/{courseId}/{classId}getOneClass")
+	@RequestMapping(method = RequestMethod.GET,value = "{dbid}/{courseId}/{classId}/getOneClass")
 	public  ProcessResult getOneClass(@PathVariable String dbid,@PathVariable String courseId,@PathVariable String classId) {
 		ProcessResult processResult = new ProcessResult();
 		processResult.setRetCode(VideodbConst.RESULT_FAILURE);

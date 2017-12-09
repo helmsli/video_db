@@ -35,7 +35,7 @@ public interface CourseClassMapper {
 	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,category,classTitle,searchKeys,"
 			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
 			+ "freePercent,detail as detailByte,vodeoId,voidurl,status,teacherName,teacherResume "
-			+ "FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
+			+ "FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId}  and classId=#{classId}")
 	public CourseClass selectByClassid(@Param("partitionId") String partitionId,@Param("courseId") String courseId,@Param("classId") String classId);
 	
 	/**
