@@ -7,10 +7,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration
+@EnableTransactionManagement
 @MapperScan({ "com.company.videodb.mapper", "com.company.userOrder.mapper" })
 @ComponentScan("com.company.videodb,com.company.userOrder")
 public class VideoDbApplication {

@@ -11,15 +11,16 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.company.userOrder.domain.UserOrder;
 import com.company.userOrder.domain.UserOrder;
 
 @Mapper
 public interface UserOrderMapper {
 	
+	
 	@Insert("insert into userorder(createTime,userId,orderId,category,status,orderDataType,orderData,updateTime) values(#{createTime},#{userId},#{orderId},#{category},#{status},#{orderDataType},#{orderDataByte,jdbcType=BLOB},#{updateTime})")
-	public void insertUserOrder(UserOrder userOrder);
+	public int insertUserOrder(UserOrder userOrder);
 	
 	@Update("update userorder set category=#{category},status=#{status},orderDataType=#{orderDataType},orderData=#{orderDataByte,jdbcType=BLOB},updateTime=#{updateTime} where createTime=#{createTime} and userId=#{userId} and category=#{category} and orderId=#{orderId}")
 	public int updateUserOrder(UserOrder userOrder);

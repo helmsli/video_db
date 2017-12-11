@@ -3,8 +3,11 @@ package com.company.userOrder.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.company.userOrder.domain.UserOrder;
 import com.company.userOrder.domain.QueryUserOrderRequest;
@@ -19,6 +22,8 @@ import com.xinwei.nnl.common.domain.ProcessResult;
 
 @Service("userOrderDbService")
 public class UserOrderDbServiceImpl implements UserOrderDbService {
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private UserOrderMapper userOrderMapper;
 
@@ -72,15 +77,20 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 		int rNumbers = userOrderMapper.selectCountById(userOrder);
 		if(rNumbers>0)
 		{
+			log.error("rnumber>0:" + userOrder.toString());
 			int updateNumbers = userOrderMapper.updateUserOrder(userOrder);
 			if(updateNumbers==1)
 			{
+				log.error("rnumber>0:" + updateNumbers);
+				
 				processResult.setRetCode(UserOrderConst.RESULT_SUCCESS);
 			}
 		}
 		else
 		{
-			userOrderMapper.insertUserOrder(userOrder);
+			int insertNumber=userOrderMapper.insertUserOrder(userOrder);
+			log.error("insertNumber>0:" + insertNumber + userOrder.toString());
+			
 			processResult.setRetCode(UserOrderConst.RESULT_SUCCESS);
 		}
 				
@@ -107,6 +117,25 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 		}
 		return processResult;
 	
+	}
+
+	@Override
+	public ProcessResult selByUserOrderId(UserOrder userOrder) {
+		// TODO Auto-generated method stub
+				ProcessResult processResult = getDefaultErrorResult();
+
+				UserOrder retUserOrder = userOrderMapper.selectUserOrderById(userOrder);
+				if(retUserOrder!=null)
+				{
+					processResult.setResponseInfo(retUserOrder);
+					processResult.setRetCode(UserOrderConst.RESULT_SUCCESS);
+				}
+				else
+				{
+					processResult.setRetCode(UserOrderConst.RESULT_Error_NotFound);
+					processResult.setRetMsg("not found record");
+				}
+				return processResult;
 	}
 
 }
