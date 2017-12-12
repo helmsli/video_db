@@ -33,7 +33,7 @@ public interface UserOrderMapper {
 	@Delete("delete from  userorder  where createTime=#{createTime} and userId=#{userId} and category=#{category} and orderId=#{orderId}")
 	public int delUserOrder(UserOrder userOrder);
 	
-	@Select("select createTime from  userorder  where createTime=#{createTime} and userId=#{userId} and category=#{category} and orderId=#{orderId}")
+	@Select("select createTime,userId,orderId,category,status,orderDataType,orderData as orderDataByte,updateTime from  userorder  where createTime=#{createTime} and userId=#{userId} and category=#{category} and orderId=#{orderId}")
 	public UserOrder selectUserOrderById(UserOrder userOrder);
 	
 	@Select("select count(*) from userorder where createTime=#{createTime} and userId=#{userId} and category=#{category} and orderId=#{orderId}")
