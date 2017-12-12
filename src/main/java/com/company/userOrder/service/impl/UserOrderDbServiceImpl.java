@@ -40,7 +40,7 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 
 		PageHelper.startPage(queryUserOrderRequest.getPageNum(), queryUserOrderRequest.getPageSize());
 		List<UserOrder> list = userOrderMapper.selOrdersByUser(queryUserOrderRequest.getCategory(),queryUserOrderRequest.getStartCreateTime(),
-				queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserid());
+				queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserId());
 		
 		PageInfo pageInfo = new PageInfo(list);
 		processResult.setResponseInfo(pageInfo);
@@ -58,7 +58,7 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 
 		PageHelper.startPage(queryUserOrderRequest.getPageNum(), queryUserOrderRequest.getPageSize());
 		List<UserOrder> list = userOrderMapper.selOrderByUserStatus(queryUserOrderRequest.getCategory(),queryUserOrderRequest.getStartCreateTime(),
-				queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserid(),
+				queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserId(),
 				queryUserOrderRequest.getStatus());
 		PageInfo pageInfo = new PageInfo(list);
 		// Page page = (Page) list;
