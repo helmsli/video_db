@@ -53,7 +53,7 @@ public class CourseClass implements Serializable {
 	private String category;
 	
 	/** 课时标题. */
-	private String classTitle;
+	private String classTitle=null;
 	
 	/** 课程详情. */
 	private transient byte[] detailByte=null;
@@ -93,19 +93,19 @@ public class CourseClass implements Serializable {
 	/** 免费观看百分比. */
 	private int freePercent;
 	
-	/** 课程详情. */
-	private String detail=null;
+	
 
 	/** 视频播放id. */
-	private String vodeoId;
+	private String videoId;
 
 	/** 视频播放地址. */
-	private String voidurl;
+	private String videoUrl;
 	/**
 	 * 1--准备发布
 2--已经发布
 3--已经发布后修改待二次发布
 4--下架
+255-已经购买
 	 */
 	private int  status;
 	
@@ -245,47 +245,23 @@ public class CourseClass implements Serializable {
 		this.freePercent = freePercent;
 	}
 
-	public String getDetail() {
-		
-		if(detail!=null)
-		{
-			return detail;
-		}
-		else
-		{
-			if(this.detailByte!=null)
-			{
-				try {
-					this.setDetail(new String(detailByte, DEFAULT_CHARSET));
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-		}
-		return detail;
-		
+	
+	
+
+	public String getVideoId() {
+		return videoId;
 	}
 
-	public void setDetail(String detail) {
-		this.detail = detail;
+	public void setVideoId(String videoId) {
+		this.videoId = videoId;
 	}
 
-	public String getVodeoId() {
-		return vodeoId;
+	public String getVideoUrl() {
+		return videoUrl;
 	}
 
-	public void setVodeoId(String vodeoId) {
-		this.vodeoId = vodeoId;
-	}
-
-	public String getVoidurl() {
-		return voidurl;
-	}
-
-	public void setVoidurl(String voidurl) {
-		this.voidurl = voidurl;
+	public void setVidoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 
 	public int getStatus() {
@@ -332,11 +308,39 @@ public class CourseClass implements Serializable {
 	}
 
 	public String getClassDetail() {
+	
+		if(classDetail!=null)
+		{
+			return classDetail;
+		}
+		else
+		{
+			if(this.detailByte!=null)
+			{
+				try {
+					classDetail=new String(detailByte, DEFAULT_CHARSET);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
 		return classDetail;
+
 	}
 
 	public void setClassDetail(String classDetail) {
 		this.classDetail = classDetail;
+		if(!StringUtils.isEmpty(classDetail))
+		{
+			try {
+				this.detailByte=classDetail.getBytes(DEFAULT_CHARSET);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -346,7 +350,7 @@ public class CourseClass implements Serializable {
 				+ ", durationSeconds=" + durationSeconds + ", owner=" + owner + ", createTime=" + createTime
 				+ ", originalPrice=" + originalPrice + ", realPrice=" + realPrice + ", priceVer=" + priceVer
 				+ ", checkCrc=" + checkCrc + ", freeDurations=" + freeDurations + ", freePercent=" + freePercent
-				+ ", detail=" + detail + ", vodeoId=" + vodeoId + ", voidurl=" + voidurl + ", status=" + status
+			    + ", vodeoId=" + videoId + ", voidurl=" + videoUrl + ", status=" + status
 				+ ", teacherName=" + teacherName + ", teacherResume=" + teacherResume + "]";
 	}
 
@@ -354,15 +358,18 @@ public class CourseClass implements Serializable {
 
 	public byte[] getDetailByte() {
 		try {
-			if(!StringUtils.isEmpty(this.getDetail()))
+			if(StringUtils.isEmpty(this.detailByte))
 			{
-				return getDetail().getBytes(DEFAULT_CHARSET);
+				if(!StringUtils.isEmpty(this.classDetail))
+				{
+					detailByte=classDetail.getBytes(DEFAULT_CHARSET);
+				}
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return detailByte;
 	
 	}
 
@@ -370,8 +377,7 @@ public class CourseClass implements Serializable {
 		try {
 			if(detailByte!=null)
 			{
-				this.setDetail(new String(detailByte, DEFAULT_CHARSET));
-				
+				this.classDetail=new String(detailByte, DEFAULT_CHARSET);
 			}
 			this.detailByte=detailByte;
 		} catch (UnsupportedEncodingException e) {

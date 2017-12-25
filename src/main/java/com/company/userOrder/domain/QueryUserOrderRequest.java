@@ -12,7 +12,7 @@ public class QueryUserOrderRequest extends QueryPageRequest {
 	 */
 	private static final long serialVersionUID = 1578752993197351755L;
 	private Date startCreateTime;
-	private Date endCreateTime;
+	private Date endCreateTime=Calendar.getInstance().getTime();
 	private String userId;
 	private String category;
 	private int status=STATUS_NULL;

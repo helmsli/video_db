@@ -77,7 +77,13 @@ public class Courses implements Serializable {
 	/** 课程保护字段. */
 	private transient String checkCrc;
 
-	
+	/**
+	 * 1--准备发布
+2--已经发布
+3--已经发布后修改待二次发布
+4--下架
+255-已经全部购买
+	 */
 	private int status=0;
 	
 	private String teacherName;

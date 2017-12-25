@@ -41,8 +41,6 @@ public interface UserOrderMapper {
 	
 	
 	@Select("select createTime,userId,orderId,category,status,orderDataType,orderData as orderDataByte,updateTime from  userorder  where createTime between #{startCreateTime} and #{endCreateTime} and userId=#{userId} and category=#{category} order by createTime desc,userid desc,category desc,updateTime desc")
-	@Results({@Result(column = "addr_id", property = "address.addrId")  
-	})
 	public List<UserOrder> selOrdersByUser(@Param("category") String category,@Param("startCreateTime") Date startCreateTime,@Param("endCreateTime") Date endCreateTime,@Param("userId") String userid);
 	
 	@Select("select createTime,userId,orderId,category,status,orderDataType,orderData as orderDataByte,updateTime from  userorder  where createTime between #{startCreateTime} and #{endCreateTime} and userId=#{userId} and category=#{category} and status = #{status} order by createTime desc,userid desc,category desc,updateTime desc")

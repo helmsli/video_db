@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>0</x>
-	<y>229</y>
+	<x>292</x>
+	<y>235</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2017-09-25 19:05:48</creation_date>
-			<updated_date>2017-12-08 08:02:47</updated_date>
+			<updated_date>2017-12-23 13:39:26</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -809,7 +809,7 @@
 			<char_semantics>false</char_semantics>
 			<description></description>
 			<logical_name>视频播放id</logical_name>
-			<physical_name>vodeoId</physical_name>
+			<physical_name>videoId</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -825,7 +825,7 @@
 			<char_semantics>false</char_semantics>
 			<description></description>
 			<logical_name>视频播放地址</logical_name>
-			<physical_name>voidUrl</physical_name>
+			<physical_name>videoUrl</physical_name>
 			<type>varchar(n)</type>
 		</word>
 	</dictionary>

@@ -72,9 +72,9 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		long lAmount =Math.round(courseClass.getRealPrice()*100);	
 		str.append(lAmount);
 		str.append(DbAlgorithm.Prop_split);
-		str.append(courseClass.getVodeoId());
+		str.append(courseClass.getVideoId());
 		str.append(DbAlgorithm.Prop_split);
-		str.append(courseClass.getVoidurl());
+		str.append(courseClass.getVideoUrl());
 		str.append(DbAlgorithm.Prop_split);
 		String crcCheck = DbAlgorithm.EncoderByMd5(this.dbCrcKey, str.toString());
 		
@@ -220,9 +220,9 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		}
 		
 		
-		if(!StringUtils.isEmpty(sourceClass.getDetail()))
+		if(!StringUtils.isEmpty(sourceClass.getClassDetail()))
 		{
-			courseClass.setDetail(sourceClass.getDetail());
+			courseClass.setClassDetail(sourceClass.getClassDetail());
 		}
 		
 		if(sourceClass.getDurationSeconds()!=0)
@@ -261,13 +261,13 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 		{
 			courseClass.setStatus(sourceClass.getStatus());
 		}
-		if(!StringUtils.isEmpty(sourceClass.getVodeoId()))
+		if(!StringUtils.isEmpty(sourceClass.getVideoId()))
 		{
-			courseClass.setVodeoId(sourceClass.getVodeoId());
+			courseClass.setVideoId(sourceClass.getVideoId());
 		}
-		if(!StringUtils.isEmpty(sourceClass.getVoidurl()))
+		if(!StringUtils.isEmpty(sourceClass.getVideoUrl()))
 		{
-			courseClass.setVoidurl(sourceClass.getVoidurl());
+			courseClass.setVidoUrl(sourceClass.getVideoUrl());
 		}
 
 		if(!StringUtils.isEmpty(sourceClass.getTeacherName()))

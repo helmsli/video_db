@@ -21,10 +21,10 @@ public interface CourseClassMapper {
 	 */
 	@Insert("INSERT INTO courseClass(partitionId,classId,courseId,chapterId,courseseqId,category,classTitle,searchKeys,"
 			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
-			+ "freePercent,detail,vodeoId,voidurl,status,teacherName,teacherResume) VALUES("
+			+ "freePercent,detail,videoId,videoUrl,status,teacherName,teacherResume) VALUES("
 			+ "#{partitionId},#{classId},#{courseId},#{chapterId},#{courseseqId},#{category},#{classTitle},#{searchKeys},"
 			+ "#{durationSeconds},#{owner},#{createTime},#{originalPrice},#{realPrice},#{priceVer},#{checkCrc},#{freeDurations},"
-			+ "#{freePercent},#{detailByte},#{vodeoId},#{voidurl},#{status},#{teacherName},#{teacherResume})")	   
+			+ "#{freePercent},#{detailByte},#{videoId},#{videoUrl},#{status},#{teacherName},#{teacherResume})")	   
 	public void insertCourseClass(CourseClass courseClass);
 	
 	/**
@@ -34,7 +34,7 @@ public interface CourseClassMapper {
 	 */
 	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,category,classTitle,searchKeys,"
 			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
-			+ "freePercent,detail as detailByte,vodeoId,voidurl,status,teacherName,teacherResume "
+			+ "freePercent,detail as detailByte,videoId,videoUrl,status,teacherName,teacherResume "
 			+ "FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId}  and classId=#{classId}")
 	public CourseClass selectByClassid(@Param("partitionId") String partitionId,@Param("courseId") String courseId,@Param("classId") String classId);
 	
@@ -46,7 +46,7 @@ public interface CourseClassMapper {
 	 */
 	@Select("SELECT partitionId,classId,courseId,chapterId,courseseqId,category,classTitle,searchKeys,"
 			+ "durationSeconds,owner,createTime,originalPrice,realPrice,priceVer,checkCrc,freeDurations,"
-			+ "freePercent,detail as detailByte,vodeoId,voidurl,status,teacherName,teacherResume "
+			+ "freePercent,detail as detailByte,videoId,videoUrl,status,teacherName,teacherResume "
 			+ " FROM courseClass where partitionId=#{partitionId} and courseId = #{courseId} order by partitionId asc,courseId asc,chapterId asc,classId asc")
 	public List<CourseClass> selectByCourseId(@Param("partitionId") String partitionId,@Param("courseId") String courseId);
 	
@@ -59,7 +59,7 @@ public interface CourseClassMapper {
 			 +"courseseqId=#{courseseqId},category=#{category},classTitle=#{classTitle},searchKeys=#{searchKeys},"
 			+ "durationSeconds=#{durationSeconds},owner=#{owner},createTime=#{createTime},originalPrice=#{originalPrice},realPrice=#{realPrice},"
 			+ "priceVer=#{priceVer},checkCrc=#{checkCrc},freeDurations=#{freeDurations},"
-			+ "freePercent=#{freePercent},detail=#{detailByte},vodeoId=#{vodeoId},voidurl=#{voidurl},status=#{status},teacherName=#{teacherName},teacherResume=#{teacherResume}"
+			+ "freePercent=#{freePercent},detail=#{detailByte},videoId=#{videoId},videoUrl=#{videoUrl},status=#{status},teacherName=#{teacherName},teacherResume=#{teacherResume}"
 			+" where partitionId=#{partitionId} and courseId = #{courseId} and chapterId=#{chapterId} and classId=#{classId}")
 	public int updateClass(CourseClass courseClass);
 	
