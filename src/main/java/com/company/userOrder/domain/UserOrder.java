@@ -39,9 +39,12 @@ public class UserOrder implements Serializable {
 	/** 订单类型. */
 	private String category;
 
+	
 	/** 订单状态. */
 	private int status;
-
+	
+	private int amount=0;
+	
 	private Date updateTime;
 
 	private String orderDataType;
@@ -52,6 +55,20 @@ public class UserOrder implements Serializable {
 		this.setCreateTime(Calendar.getInstance().getTime());
 		this.setUpdateTime(Calendar.getInstance().getTime());
 	}
+
+	
+	
+	public int getAmount() {
+		return amount;
+	}
+
+
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+
 
 	public Date getCreateTime() {
 		return createTime;

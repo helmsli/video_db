@@ -17,6 +17,14 @@ public interface UserOrderDbService {
 	 */
 	public ProcessResult selOrdersByUser(QueryUserOrderRequest queryUserOrderRequest);
 	
+	
+	/**
+	 * 按照用户查询所有用户
+	 * @param queryUserOrderRequest
+	 * @return
+	 */
+	public ProcessResult selOrdersByUserSortByOrderId(QueryUserOrderRequest queryUserOrderRequest);
+	
 	/**
 	 * 按照userid,orderId查询订单信息
 	 * @param queryUserOrderRequest
@@ -37,6 +45,14 @@ public interface UserOrderDbService {
 	 * @return
 	 */
 	public ProcessResult configureUserOrder(UserOrder userOrder);
+
+	
+	/**
+	 * 增加用户订单的amount
+	 * @param userOrder
+	 * @return
+	 */
+	public ProcessResult plusUserAmount(UserOrder userOrder);
 
 	/**
 	 * 

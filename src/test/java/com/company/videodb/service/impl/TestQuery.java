@@ -60,7 +60,7 @@ public class TestQuery {
 		UserOrder UserOrder = new UserOrder();
 		jsonRequest.setEndCreateTime(UserOrder.getConstCreateDate());
 		jsonRequest.setStartCreateTime(UserOrder.getConstCreateDate());
-		jsonRequest.setUserid("110003007");
+		jsonRequest.setUserId("110003007");
 		jsonRequest.setPageNum(1);
 		jsonRequest.setPageSize(100);
 		

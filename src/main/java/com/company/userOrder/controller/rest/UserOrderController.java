@@ -1,9 +1,12 @@
 package com.company.userOrder.controller.rest;
 
+import java.util.Calendar;
+
 import javax.annotation.Resource;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,6 +55,66 @@ public class UserOrderController {
 				processResult = userOrderDbService.selOrderByUserStatus(queryUserOrderRequest);
 					
 			}
+			
+			//toJsonSimpleProcessResult(processResult);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ControllerUtils.getFromResponse(e, UserOrderConst.RESULT_FAILURE, null);
+			
+		}
+		return processResult;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "{category}/{userid}/queryUserOrderConst")
+	public ProcessResult queryUserAllOrderConst(@PathVariable String category, @PathVariable String userid,
+			@RequestBody QueryUserOrderRequest queryUserOrderRequest) {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(UserOrderConst.RESULT_FAILURE);
+		try {
+			queryUserOrderRequest.setCategory(category);
+			UserOrder userOrder = new UserOrder();
+			queryUserOrderRequest.setStartCreateTime(userOrder.getConstCreateDate());
+			Calendar end = Calendar.getInstance();
+			end.setTime(userOrder.getConstCreateDate());
+			end.add(Calendar.SECOND, 1);
+			queryUserOrderRequest.setEndCreateTime(end.getTime());
+			if(queryUserOrderRequest.getStatus()==QueryUserOrderRequest.STATUS_NULL)
+			{
+				processResult = userOrderDbService.selOrdersByUser(queryUserOrderRequest);
+			}
+			else
+			{
+				processResult = userOrderDbService.selOrderByUserStatus(queryUserOrderRequest);
+					
+			}
+			
+			//toJsonSimpleProcessResult(processResult);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ControllerUtils.getFromResponse(e, UserOrderConst.RESULT_FAILURE, null);
+			
+		}
+		return processResult;
+	}
+	/**
+	 * 按照orderId排序
+	 * @param category
+	 * @param userid
+	 * @param queryUserOrderRequest
+	 * @return
+	 */
+	@PostMapping(value = "{category}/{userid}/queryOrderSortByOrderId")
+	public ProcessResult queryUserAllOrderSortByOrderId(@PathVariable String category, @PathVariable String userid,
+			@RequestBody QueryUserOrderRequest queryUserOrderRequest) {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(UserOrderConst.RESULT_FAILURE);
+		try {
+			queryUserOrderRequest.setCategory(category);
+			
+			processResult = userOrderDbService.selOrdersByUserSortByOrderId(queryUserOrderRequest);
+			
 			
 			//toJsonSimpleProcessResult(processResult);
 		} catch (Exception e) {
@@ -139,6 +202,31 @@ public class UserOrderController {
 		return processResult;
 	}
 
+	/**
+	 * 用于将用户的状态+1
+	 * @param category
+	 * @param userid
+	 * @param userOrder
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "{category}/{userid}/plusUserStatus")
+	public ProcessResult plusUserOrderStatus(@PathVariable String category, @PathVariable String userid,
+			@RequestBody UserOrder userOrder) {
+		ProcessResult processResult = new ProcessResult();
+		processResult.setRetCode(UserOrderConst.RESULT_FAILURE);
+		try {
+			processResult = userOrderDbService.plusUserAmount(userOrder);
+			toJsonSimpleProcessResult(processResult);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ControllerUtils.getFromResponse(e, UserOrderConst.RESULT_FAILURE, null);
+			
+		}
+		return processResult;
+	}
+
+	
 	/**
 	 * 删除用户订单
 	 * 

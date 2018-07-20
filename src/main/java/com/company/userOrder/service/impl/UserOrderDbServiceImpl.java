@@ -3,6 +3,7 @@ package com.company.userOrder.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.company.userOrder.domain.UserOrder;
+import com.company.userOrder.controller.rest.ControllerUtils;
 import com.company.userOrder.domain.QueryUserOrderRequest;
 import com.company.userOrder.domain.UserOrder;
 import com.company.userOrder.mapper.UserOrderMapper;
@@ -37,11 +39,20 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 	public ProcessResult selOrdersByUser(QueryUserOrderRequest queryUserOrderRequest) {
 		// TODO Auto-generated method stub
 		ProcessResult processResult = getDefaultErrorResult();
-
+		List<UserOrder> list=null;
+		if(StringUtils.isEmpty(queryUserOrderRequest.getUserId()))
+		{
 		PageHelper.startPage(queryUserOrderRequest.getPageNum(), queryUserOrderRequest.getPageSize());
-		List<UserOrder> list = userOrderMapper.selOrdersByUser(queryUserOrderRequest.getCategory(),queryUserOrderRequest.getStartCreateTime(),
-				queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserId());
-		
+		list = userOrderMapper.selOrdersByTime(queryUserOrderRequest.getCategory(),queryUserOrderRequest.getStartCreateTime(),
+				queryUserOrderRequest.getEndCreateTime());
+		}
+		else
+		{
+			PageHelper.startPage(queryUserOrderRequest.getPageNum(), queryUserOrderRequest.getPageSize());
+			list = userOrderMapper.selOrdersByUser(queryUserOrderRequest.getCategory(),queryUserOrderRequest.getStartCreateTime(),
+					queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserId());
+				
+		}
 		PageInfo pageInfo = new PageInfo(list);
 		processResult.setResponseInfo(pageInfo);
 		processResult.setRetCode(UserOrderConst.RESULT_SUCCESS);
@@ -136,6 +147,38 @@ public class UserOrderDbServiceImpl implements UserOrderDbService {
 					processResult.setRetMsg("not found record");
 				}
 				return processResult;
+	}
+
+	@Override
+	public ProcessResult selOrdersByUserSortByOrderId(QueryUserOrderRequest queryUserOrderRequest) {
+		// TODO Auto-generated method stub
+				ProcessResult processResult = getDefaultErrorResult();
+
+				PageHelper.startPage(queryUserOrderRequest.getPageNum(), queryUserOrderRequest.getPageSize());
+				List<UserOrder> list = userOrderMapper.selOrdersByUserSortByOrderId(queryUserOrderRequest.getCategory(),queryUserOrderRequest.getStartCreateTime(),
+						queryUserOrderRequest.getEndCreateTime(), queryUserOrderRequest.getUserId());
+				
+				PageInfo pageInfo = new PageInfo(list);
+				processResult.setResponseInfo(pageInfo);
+				processResult.setRetCode(UserOrderConst.RESULT_SUCCESS);
+				// Page page = (Page) list;
+				// return "PageInfo: " + JSON.toJSONString(pageInfo) + ", Page: " +
+				// JSON.toJSONString(page);
+				return processResult;
+	}
+
+	@Override
+	public ProcessResult plusUserAmount(UserOrder userOrder) {
+		// TODO Auto-generated method stub
+		int updateNum =  this.userOrderMapper.plusUserAmount(userOrder);
+		if(updateNum==1)
+		{
+			return ControllerUtils.getSuccessResponse(null);
+		}
+		else
+		{
+			return ControllerUtils.getErrorResponse(-1, "can not find the record");
+		}
 	}
 
 }

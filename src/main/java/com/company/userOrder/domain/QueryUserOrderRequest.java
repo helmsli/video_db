@@ -28,6 +28,10 @@ public class QueryUserOrderRequest extends QueryPageRequest {
 	}
 	public void setEndCreateTime(Date endCreateTime) {
 		this.endCreateTime = formatDate(endCreateTime);
+		if(endCreateTime==null)
+		{
+			this.endCreateTime = Calendar.getInstance().getTime();
+		}
 	}
 	public String getUserId() {
 		return userId;

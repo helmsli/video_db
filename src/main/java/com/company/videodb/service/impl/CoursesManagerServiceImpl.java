@@ -297,6 +297,7 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 			courses.setCheckCrc(newCrc);
 			coursesMapper.insertCourses(courses);
 			processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
+			processResult.setRetMsg("insert");
 		}
 		//如果存在数据
 		else if(processResult.getRetCode()==VideodbConst.RESULT_SUCCESS)
@@ -320,6 +321,7 @@ public class CoursesManagerServiceImpl implements CoursesManagerService {
 			{
 				processResult.setRetCode(VideodbConst.RESULT_SUCCESS);
 				processResult.setResponseInfo(dbCourses);
+				processResult.setRetMsg("update");
 			}
 			else
 			{
